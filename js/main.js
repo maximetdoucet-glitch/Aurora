@@ -83,13 +83,15 @@ $$(".nav__links a").forEach((a) =>
 );
 
 // ---------- BACKGROUND-IMAGE HYDRATION -------------------------------
-// Elements with data-img get their image as a CSS custom property `--img`,
-// which the stylesheet uses via `background-image: var(--img)`.
-// One unified mechanism for suite rows, sfeer tiles, anything else.
+// Set backgroundImage directly — bulletproof. Some CSS interactions
+// in the full page were swallowing the var(--img) approach.
 $$("[data-img]").forEach((el) => {
   const src = el.getAttribute("data-img");
   if (!src) return;
-  el.style.setProperty("--img", `url("${src}")`);
+  el.style.backgroundImage = `url("${src}")`;
+  el.style.backgroundSize = "cover";
+  el.style.backgroundPosition = "center";
+  el.style.backgroundRepeat = "no-repeat";
 });
 
 // ---------- REVEAL ON SCROLL -----------------------------------------
@@ -113,36 +115,56 @@ if ("IntersectionObserver" in window) {
 }
 
 // ---------- HERO VIDEO ROTATOR --------------------------------------
-// Each clip plays through ONCE, then advances to the next (no looping).
-// Last clip → wraps to first. The list is endless but each individual
-// clip plays start-to-end uninterrupted.
+// Each clip plays through ONCE, then advances to the next.
+// Robust pattern:
+//   - All videos preload="metadata" so duration is known up-front.
+//   - When a clip becomes active: set currentTime=0, call play().
+//   - Advance trigger = ended event + a duration-based timeout fallback,
+//     because ended doesn't fire reliably across all browsers/codecs.
 const heroVideos = $$(".hero__video");
 if (heroVideos.length) {
-  // Lazy-load each clip's source. preload="metadata" on the first one
-  // means it fetches enough to know duration; preload="none" on others
-  // delays full download until they become active.
   heroVideos.forEach((v) => {
     const src = v.getAttribute("data-src");
     if (src) {
       v.src = src;
+      v.preload = "metadata";  // override any preload="none" so we know duration
       v.load();
     }
   });
 
   let idx = 0;
+  let advanceTimer = null;
+
+  const scheduleAdvanceFallback = (cur) => {
+    clearTimeout(advanceTimer);
+    // wait for video metadata if not loaded yet
+    const arm = () => {
+      const dur = isFinite(cur.duration) && cur.duration > 0 ? cur.duration : 5;
+      advanceTimer = setTimeout(next, (dur + 0.15) * 1000);
+    };
+    if (cur.readyState >= 1 /* HAVE_METADATA */) arm();
+    else cur.addEventListener("loadedmetadata", arm, { once: true });
+  };
+
   const next = () => {
-    heroVideos[idx].classList.remove("is-active");
-    heroVideos[idx].pause();
-    heroVideos[idx].currentTime = 0;
+    clearTimeout(advanceTimer);
+    const prev = heroVideos[idx];
+    prev.classList.remove("is-active");
+    prev.pause();
+
     idx = (idx + 1) % heroVideos.length;
     const cur = heroVideos[idx];
     cur.classList.add("is-active");
-    cur.currentTime = 0;
-    // Some browsers need a beat after class swap before play() resolves
-    cur.play().catch(() => { /* ignore autoplay rejections */ });
+    try { cur.currentTime = 0; } catch (_) { /* may not be seekable yet */ }
+    const p = cur.play();
+    if (p && typeof p.catch === "function") p.catch(() => {});
+    scheduleAdvanceFallback(cur);
   };
-  // Advance each time the current clip finishes — no setInterval, no loop.
+
+  // Advance on natural end of any clip
   heroVideos.forEach((v) => on(v, "ended", next));
+  // Arm initial fallback for the first clip too
+  scheduleAdvanceFallback(heroVideos[0]);
 }
 
 // ---------- BOOKING MODAL --------------------------------------------

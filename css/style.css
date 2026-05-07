@@ -844,6 +844,56 @@ button { font-family: inherit; cursor: pointer; }
   * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
 
+/* ============ MASSAGE SUB-TYPES LIST (used on massages.html) ============ */
+.subtypes {
+  margin: 28px 0 32px;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line-soft);
+}
+.subtypes > li {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.subtypes__name {
+  font-family: var(--serif); font-weight: 500; font-style: italic;
+  color: var(--bone);
+  font-size: 18px;
+  letter-spacing: -0.005em;
+}
+.subtypes__desc {
+  font-size: 14px; line-height: 1.6;
+  color: var(--text);
+}
+
+/* House-rules + closed-days strip */
+.rules-grid {
+  display: grid; gap: 28px;
+  grid-template-columns: 2fr 1fr;
+}
+.rules-grid h3 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: 24px; color: var(--bone);
+  margin: 0 0 16px;
+}
+.rules-grid ul {
+  list-style: none; margin: 0; padding: 0;
+}
+.rules-grid li {
+  padding: 12px 0; border-bottom: 1px solid var(--line-soft);
+  font-size: 15px; color: var(--text); line-height: 1.6;
+}
+.rules-grid li:last-child { border-bottom: 0; }
+.rules-grid li::before {
+  content: "—  "; color: var(--gold); font-weight: 600;
+}
+@media (max-width: 760px) {
+  .rules-grid { grid-template-columns: 1fr; }
+}
+
 /* fade-in on scroll */
 .reveal {
   opacity: 0; transform: translateY(20px);
