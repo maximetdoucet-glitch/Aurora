@@ -885,7 +885,41 @@ button { font-family: inherit; cursor: pointer; }
   background: var(--gold); margin-top: 4px;
 }
 
-/* ============ MASSEUSE / DETAIL CARDS (3-up) ============ */
+/* ============ MASSEUSE GRID (4-up portrait cards) ============ */
+.masseuses__grid {
+  display: grid; gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.masseuse-card {
+  text-align: left;
+  position: relative;
+  cursor: default;
+}
+.masseuse-card__photo {
+  aspect-ratio: 4 / 5;
+  background: var(--surface) center/cover no-repeat;
+  background-image: var(--img, none);
+  margin-bottom: 16px;
+  filter: saturate(.92) contrast(1.04) brightness(.96);
+  transition: filter .4s var(--ease), transform .4s var(--ease);
+  border: 1px solid var(--line-soft);
+}
+.masseuse-card:hover .masseuse-card__photo {
+  filter: saturate(1.05) contrast(1.05) brightness(1);
+  transform: translateY(-3px);
+}
+.masseuse-card__name {
+  font-family: var(--serif); font-weight: 400;
+  font-size: 22px; color: var(--bone);
+  margin: 0; letter-spacing: -0.005em;
+}
+.masseuse-card__hint {
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); margin-top: 4px;
+  font-weight: 500;
+}
+
+/* ============ DETAIL CARDS (3-up) ============ */
 .values__grid {
   display: grid; gap: 32px;
   grid-template-columns: repeat(3, 1fr);
