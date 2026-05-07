@@ -850,3 +850,157 @@ button { font-family: inherit; cursor: pointer; }
   transition: opacity 1s var(--ease), transform 1s var(--ease);
 }
 .reveal.is-in { opacity: 1; transform: translateY(0); }
+
+/* ============ SUB-PAGE HERO (no video) ============ */
+.page-hero {
+  position: relative;
+  padding: 220px var(--gutter) clamp(80px, 10vw, 140px);
+  text-align: center;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line-soft);
+  z-index: 2;
+}
+.page-hero .eyebrow { margin-left: auto; margin-right: auto; }
+.page-hero h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(54px, 8vw, 108px);
+  line-height: .96;
+  letter-spacing: -0.015em;
+  margin: 6px 0 22px;
+  color: var(--bone);
+}
+.page-hero h1 em { font-style: italic; color: var(--bone-dim); font-weight: 300; }
+.page-hero__lede {
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(18px, 1.6vw, 22px);
+  color: var(--bone-dim);
+  max-width: 600px; margin: 0 auto;
+  line-height: 1.55;
+}
+
+/* nav active state */
+.nav__links a.is-active { color: var(--gold); }
+.nav__links a.is-active::after {
+  content: ""; display: block; width: 100%; height: 1px;
+  background: var(--gold); margin-top: 4px;
+}
+
+/* ============ MASSEUSE / DETAIL CARDS (3-up) ============ */
+.values__grid {
+  display: grid; gap: 32px;
+  grid-template-columns: repeat(3, 1fr);
+}
+.value-card {
+  position: relative;
+}
+.value-card__photo {
+  aspect-ratio: 4 / 5;
+  background: var(--surface) center/cover no-repeat;
+  background-image: var(--img, linear-gradient(135deg, #1f1810, #14100a));
+  margin-bottom: 24px;
+  border: 1px solid var(--line-soft);
+  filter: saturate(.92) contrast(1.02);
+}
+.value-card__num {
+  font-family: var(--serif); font-style: italic;
+  font-size: 13px; color: var(--gold);
+  margin-bottom: 8px;
+}
+.value-card h3 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: 30px; margin: 0 0 12px; color: var(--bone);
+  letter-spacing: -0.005em;
+}
+.value-card p {
+  font-size: 15px; line-height: 1.7; color: var(--text); margin: 0;
+}
+@media (max-width: 880px) {
+  .values__grid { grid-template-columns: 1fr; gap: 56px; }
+}
+
+/* Disclaimer banner — for masseuses page */
+.notice {
+  display: flex; gap: 24px; align-items: center;
+  margin-top: clamp(48px, 8vw, 80px);
+  padding: 32px 36px;
+  background: var(--surface);
+  border-left: 2px solid var(--gold);
+}
+.notice__label {
+  font-family: var(--serif); font-style: italic;
+  color: var(--gold); font-size: 24px;
+  white-space: nowrap;
+}
+.notice p {
+  margin: 0; font-size: 16px; color: var(--text); line-height: 1.7;
+}
+@media (max-width: 760px) {
+  .notice { flex-direction: column; align-items: flex-start; gap: 14px; padding: 24px 28px; }
+}
+
+/* Detail-row variant: bigger image, more breathing space (massages page) */
+.detail-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 7vw, 96px);
+  align-items: center;
+  margin-bottom: clamp(96px, 12vw, 160px);
+}
+.detail-row:last-child { margin-bottom: 0; }
+.detail-row:nth-child(2n) > .detail-row__media { order: 2; }
+.detail-row:nth-child(2n) > .detail-row__copy { order: 1; }
+.detail-row__media {
+  aspect-ratio: 4 / 5;
+  background: var(--surface) center/cover no-repeat;
+  background-image: var(--img, none);
+  border: 1px solid var(--line-soft);
+  position: relative;
+}
+.detail-row__media::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 60%, rgba(0,0,0,.35) 100%);
+  pointer-events: none;
+}
+.detail-row__copy { max-width: 480px; }
+.detail-row:nth-child(2n) .detail-row__copy { margin-left: auto; }
+.detail-row__num {
+  font-family: var(--serif); font-style: italic;
+  font-size: 14px; color: var(--gold); margin-bottom: 14px;
+}
+.detail-row h2 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(36px, 5vw, 64px); margin: 0 0 22px;
+  color: var(--bone); letter-spacing: -0.01em; line-height: 1.02;
+}
+.detail-row__sub {
+  margin: 0 0 22px;
+  font-family: var(--serif); font-style: italic;
+  font-size: 17px; color: var(--bone-dim);
+}
+.detail-row__body {
+  margin: 0 0 24px;
+  font-size: 16px; line-height: 1.8; color: var(--text);
+}
+.detail-row__body em { color: var(--gold); font-style: italic; }
+.detail-row__features {
+  margin: 0 0 32px; padding: 0; list-style: none;
+  border-top: 1px solid var(--line-soft);
+}
+.detail-row__features li {
+  display: flex; justify-content: space-between; gap: 14px;
+  padding: 14px 0; border-bottom: 1px solid var(--line-soft);
+  font-size: 14px;
+}
+.detail-row__features li span:first-child {
+  color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase;
+  font-size: 11px; font-weight: 600;
+}
+.detail-row__features li span:last-child {
+  color: var(--bone); font-family: var(--serif); font-style: italic; font-size: 16px;
+}
+@media (max-width: 880px) {
+  .detail-row { grid-template-columns: 1fr; gap: 32px; }
+  .detail-row:nth-child(2n) > .detail-row__media { order: 0; }
+  .detail-row:nth-child(2n) > .detail-row__copy { order: 0; }
+  .detail-row:nth-child(2n) .detail-row__copy { margin-left: 0; }
+}

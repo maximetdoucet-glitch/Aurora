@@ -113,9 +113,14 @@ if ("IntersectionObserver" in window) {
 }
 
 // ---------- HERO VIDEO ROTATOR --------------------------------------
+// Each clip plays through ONCE, then advances to the next (no looping).
+// Last clip → wraps to first. The list is endless but each individual
+// clip plays start-to-end uninterrupted.
 const heroVideos = $$(".hero__video");
 if (heroVideos.length) {
-  // Lazy-load each clip's source (so the page doesn't pull all of them upfront)
+  // Lazy-load each clip's source. preload="metadata" on the first one
+  // means it fetches enough to know duration; preload="none" on others
+  // delays full download until they become active.
   heroVideos.forEach((v) => {
     const src = v.getAttribute("data-src");
     if (src) {
@@ -125,18 +130,19 @@ if (heroVideos.length) {
   });
 
   let idx = 0;
-  // Switch to next when current ends (or every 8s as fallback)
   const next = () => {
     heroVideos[idx].classList.remove("is-active");
     heroVideos[idx].pause();
+    heroVideos[idx].currentTime = 0;
     idx = (idx + 1) % heroVideos.length;
     const cur = heroVideos[idx];
     cur.classList.add("is-active");
     cur.currentTime = 0;
+    // Some browsers need a beat after class swap before play() resolves
     cur.play().catch(() => { /* ignore autoplay rejections */ });
   };
+  // Advance each time the current clip finishes — no setInterval, no loop.
   heroVideos.forEach((v) => on(v, "ended", next));
-  setInterval(next, 8000);
 }
 
 // ---------- BOOKING MODAL --------------------------------------------

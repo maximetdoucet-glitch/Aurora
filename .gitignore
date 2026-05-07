@@ -8,6 +8,5 @@ Thumbs.db
 *.log
 
 # Build artifacts (regeneratable via Edge headless)
-preview.png
-preview-hero.png
-preview.pdf
+preview*.png
+preview*.pdf
