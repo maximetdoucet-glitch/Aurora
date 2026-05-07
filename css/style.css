@@ -242,31 +242,59 @@ button { font-family: inherit; cursor: pointer; }
   }
 }
 
-/* ============ HERO — EDITORIAL SPLIT ============ */
+/* ============ HERO — FULL-BLEED VIDEO ============ */
 .hero {
   position: relative;
   min-height: 100svh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: stretch;
   overflow: hidden;
   isolation: isolate;
+  display: block;
 }
 
-.hero__text {
-  position: relative; z-index: 2;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 120px var(--gutter) 80px;
-  max-width: 620px;
-  margin-left: auto;
-  width: 100%;
+/* Full-bleed video stack */
+.hero__media {
+  position: absolute; inset: 0; z-index: 0;
+  background: var(--bg);
 }
+.hero__video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0; transition: opacity 1.6s var(--ease);
+}
+.hero__video.is-active { opacity: 1; }
+
+/* Asymmetric scrim — light at top, heavy at bottom (where text lives) */
+.hero__scrim {
+  position: absolute; inset: 0; z-index: 1;
+  pointer-events: none;
+  background:
+    /* tiny darken at top so eyebrow / meta read */
+    linear-gradient(to bottom, rgba(9,7,10,.55) 0%, rgba(9,7,10,0) 18%, rgba(9,7,10,0) 50%, rgba(9,7,10,.4) 78%, rgba(9,7,10,.95) 100%),
+    /* gentle vignette so the centre stays "open" but corners tighten */
+    radial-gradient(ellipse at center, transparent 30%, rgba(9,7,10,.35) 100%);
+}
+
+/* Asymmetric corner blocks — top-left eyebrow, top-right meta */
+.hero__corner {
+  position: absolute; z-index: 3;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.hero__corner--tl { top: 110px; left: var(--gutter); }
+.hero__corner--tr {
+  top: 110px; right: var(--gutter);
+  text-align: right;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--bone-dim);
+  font-weight: 500;
+}
+.hero__corner--tr strong { color: var(--bone); font-weight: 500; }
+
 .hero__eyebrow {
   display: inline-flex; align-items: center; gap: 14px;
   font-size: 11px; font-weight: 500;
   letter-spacing: 0.32em; text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 32px;
 }
 .hero__eyebrow::before { content: ""; width: 36px; height: 1px; background: var(--gold); }
 .hero__eyebrow .num {
@@ -274,77 +302,80 @@ button { font-family: inherit; cursor: pointer; }
   letter-spacing: 0; font-size: 13px;
   color: var(--bone-dim);
 }
+
+/* Bottom-anchored title block */
+.hero__text {
+  position: absolute; z-index: 3;
+  left: 0; right: 0; bottom: clamp(56px, 8vh, 100px);
+  padding: 0 var(--gutter);
+  text-align: center;
+  max-width: 880px; margin: 0 auto;
+}
 .hero__title {
-  margin: 0 0 24px;
+  margin: 0;
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(56px, 9vw, 124px);
-  line-height: .92;
+  font-size: clamp(64px, 10vw, 144px);
+  line-height: .9;
   letter-spacing: -0.02em;
   color: var(--bone);
+  text-shadow: 0 2px 30px rgba(0,0,0,.4);
 }
 .hero__title-sub {
-  display: block;
-  margin-top: 14px;
+  margin: 18px 0 0;
   font-family: var(--serif); font-style: italic; font-weight: 300;
-  font-size: clamp(18px, 1.8vw, 22px);
+  font-size: clamp(18px, 1.8vw, 24px);
   color: var(--bone-dim);
   letter-spacing: 0;
   line-height: 1.4;
 }
 .hero__lede {
   font-family: var(--serif);
-  font-size: clamp(17px, 1.4vw, 20px);
+  font-size: clamp(16px, 1.3vw, 18px);
   font-weight: 300;
   font-style: italic;
   line-height: 1.6;
   color: var(--text);
-  max-width: 460px;
-  margin: 0 0 44px;
+  max-width: 520px;
+  margin: 22px auto 36px;
 }
-.hero__cta { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; }
-.hero__meta {
-  margin-top: 48px;
-  display: flex; gap: 28px; flex-wrap: wrap;
-  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--muted);
+.hero__cta {
+  display: flex; gap: 24px; flex-wrap: wrap; align-items: center;
+  justify-content: center;
 }
-.hero__meta strong { color: var(--bone); font-weight: 500; }
 
-.hero__media {
-  position: relative;
-  overflow: hidden;
-  background: var(--bg-2);
-  border-left: 1px solid var(--line-soft);
-}
-.hero__video {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  opacity: 0; transition: opacity 1.4s var(--ease);
-}
-.hero__video.is-active { opacity: 1; }
-.hero__media-veil {
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(135deg, rgba(9,7,10,.35) 0%, rgba(9,7,10,0) 30%, rgba(9,7,10,.5) 100%),
-    radial-gradient(circle at center, transparent 0%, rgba(9,7,10,.3) 100%);
-  pointer-events: none;
-}
 .hero__caption {
-  position: absolute;
-  bottom: 28px; right: 28px;
+  position: absolute; z-index: 3;
+  bottom: 26px; right: var(--gutter);
   font-family: var(--serif); font-style: italic;
   font-size: 13px; color: var(--bone-dim);
   letter-spacing: 0.04em;
   pointer-events: none;
 }
 
-/* mobile: stack — text on top, video below */
-@media (max-width: 920px) {
-  .hero { grid-template-columns: 1fr; min-height: auto; }
-  .hero__text { padding: 110px var(--gutter) 60px; max-width: 100%; }
-  .hero__media { aspect-ratio: 4 / 5; border-left: 0; border-top: 1px solid var(--line-soft); min-height: 60vh; }
+.hero__scroll {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  width: 22px; height: 36px; border: 1px solid var(--bone-dim);
+  border-radius: 12px;
+  display: grid; place-items: center;
+  z-index: 3; opacity: .55;
+}
+.hero__scroll span {
+  width: 1px; height: 8px; background: var(--bone); border-radius: 1px;
+  animation: scroll-hint 2.2s infinite;
+}
+@keyframes scroll-hint {
+  0%   { transform: translateY(-6px); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: translateY(8px);  opacity: 0; }
+}
+
+/* Mobile: tighten corners + smaller meta block */
+@media (max-width: 760px) {
+  .hero__corner--tl, .hero__corner--tr { top: 92px; }
+  .hero__corner--tr { display: none; }  /* meta gets pushed; rating + hours not critical above the fold on mobile */
+  .hero__text { bottom: 80px; }
+  .hero__lede { display: none; }       /* keep hero clean on small screens */
 }
 
 /* ============ ABOUT ============ */

@@ -40,43 +40,54 @@
   </div>
 </header>
 
-<!-- ============ HERO — EDITORIAL SPLIT ============ -->
+<!-- ============ HERO — FULL-BLEED VIDEO ============ -->
 <section class="hero" id="top">
-  <div class="hero__text">
-    <div class="hero__eyebrow">
-      <span class="num">01</span>
-      <span>Erotische massage · Nijmegen</span>
-    </div>
 
-    <h1 class="hero__title">
-      Aurora
-      <span class="hero__title-sub">Dé mooiste massagesalon van Oost-Nederland.</span>
-    </h1>
-
-    <p class="hero__lede">
-      Vier thematische suites. Warme oliën, gedempt licht, en de stilte van een huis dat alleen voor jou bestaat.
-    </p>
-
-    <div class="hero__cta">
-      <button class="btn btn--accent btn--lg" data-open-book>Boek een suite</button>
-      <a class="link-arrow" href="#services">Onze massages</a>
-    </div>
-
-    <div class="hero__meta">
-      <span><strong>9,3 / 10</strong> · 27+ reviews</span>
-      <span><strong>10:00 – 22:00</strong> · vandaag open</span>
-      <span><strong>Discreet</strong> · WhatsApp-bevestiging</span>
-    </div>
-  </div>
-
+  <!-- Full-bleed video stack -->
   <div class="hero__media" aria-hidden="true">
     <video class="hero__video is-active" autoplay muted loop playsinline preload="metadata"
            poster="images/hero-poster.jpg" data-src="videos/hero-1.mp4"></video>
     <video class="hero__video" muted loop playsinline preload="none" data-src="videos/hero-2.mp4"></video>
     <video class="hero__video" muted loop playsinline preload="none" data-src="videos/hero-3.mp4"></video>
-    <div class="hero__media-veil"></div>
-    <span class="hero__caption">Heidebloemstraat 79 · sinds 2016</span>
+    <video class="hero__video" muted loop playsinline preload="none" data-src="videos/hero-4.mp4"></video>
+    <video class="hero__video" muted loop playsinline preload="none" data-src="videos/hero-5.mp4"></video>
   </div>
+
+  <!-- Soft scrim — strongest at bottom where the text sits -->
+  <div class="hero__scrim" aria-hidden="true"></div>
+
+  <!-- Top-left corner: eyebrow + caption -->
+  <div class="hero__corner hero__corner--tl">
+    <div class="hero__eyebrow">
+      <span class="num">01</span>
+      <span>Erotische massage · Nijmegen</span>
+    </div>
+  </div>
+
+  <!-- Top-right corner: rating / hours -->
+  <div class="hero__corner hero__corner--tr">
+    <span><strong>9,3 / 10</strong> · 27+ reviews</span>
+    <span><strong>10:00 – 22:00</strong> · vandaag open</span>
+  </div>
+
+  <!-- Bottom-anchored title — sits in the scrim -->
+  <div class="hero__text">
+    <h1 class="hero__title">Aurora</h1>
+    <p class="hero__title-sub">Dé mooiste massagesalon van Oost-Nederland.</p>
+    <p class="hero__lede">
+      Vier thematische suites. Warme oliën, gedempt licht, en de stilte van een huis dat alleen voor jou bestaat.
+    </p>
+    <div class="hero__cta">
+      <button class="btn btn--accent btn--lg" data-open-book>Boek een suite</button>
+      <a class="link-arrow" href="#services">Onze massages</a>
+    </div>
+  </div>
+
+  <!-- Bottom-right caption -->
+  <span class="hero__caption">Heidebloemstraat 79 · sinds 2016</span>
+
+  <!-- Scroll hint -->
+  <a class="hero__scroll" href="#about" aria-label="Scroll naar inhoud"><span></span></a>
 </section>
 
 <!-- ============ ABOUT ============ -->
