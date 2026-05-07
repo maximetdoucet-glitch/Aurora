@@ -1,0 +1,12 @@
+{
+  "name": "aurora-massages",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Aurora Massages Nijmegen — single-page site with request-booking flow.",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "preview": "npx serve . -l 3000"
+  },
+  "engines": { "node": ">=18" }
+}
