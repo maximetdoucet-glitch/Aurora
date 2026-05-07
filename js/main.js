@@ -83,18 +83,34 @@ $$(".nav__links a").forEach((a) =>
 );
 
 // ---------- BACKGROUND-IMAGE HYDRATION -------------------------------
-// Elements with data-img get a background-image. This lets us keep the
-// HTML clean and lazy-set images once the JS runs.
+// Elements with data-img get their image as a CSS custom property `--img`,
+// which the stylesheet uses via `background-image: var(--img)`.
+// One unified mechanism for suite rows, sfeer tiles, anything else.
 $$("[data-img]").forEach((el) => {
   const src = el.getAttribute("data-img");
   if (!src) return;
-  // For .suite-card__photo (which uses ::before), set --img custom prop
-  if (el.classList.contains("suite-card__photo")) {
-    el.style.setProperty("--img", `url("${src}")`);
-  } else {
-    el.style.backgroundImage = `linear-gradient(135deg, rgba(20,16,10,.55), rgba(20,16,10,.3)), url("${src}")`;
-  }
+  el.style.setProperty("--img", `url("${src}")`);
 });
+
+// ---------- REVEAL ON SCROLL -----------------------------------------
+// Soft fade-in for elements marked .reveal — premium feel without animation overload.
+if ("IntersectionObserver" in window) {
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("is-in");
+          io.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: "0px 0px -10% 0px" },
+  );
+  $$(".reveal").forEach((el) => io.observe(el));
+} else {
+  // Fallback: just show everything if IO isn't available
+  $$(".reveal").forEach((el) => el.classList.add("is-in"));
+}
 
 // ---------- HERO VIDEO ROTATOR --------------------------------------
 const heroVideos = $$(".hero__video");
