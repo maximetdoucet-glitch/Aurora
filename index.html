@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=6">
+  <link rel="stylesheet" href="css/style.css?v=7">
 </head>
 <body>
 
@@ -271,10 +271,46 @@
   </div>
 </section>
 
+<!-- ============ ROSTER (Vandaag / Morgen) ============ -->
+<section class="section roster" id="roster" aria-label="Wie is er aanwezig">
+  <div class="container">
+    <header class="section__head reveal">
+      <div class="eyebrow"><span class="num">05</span> Wie is er nu</div>
+      <h2 class="display">Aanwezig <em>vandaag &amp; morgen.</em></h2>
+      <p class="section__sub">
+        De bezetting wisselt per dag. Klik een masseuse om haar profiel te bekijken,
+        of bel ons voor de actuele lijst.
+      </p>
+    </header>
+
+    <div class="roster__grid reveal">
+      <div class="roster__col">
+        <div class="roster__head">
+          <span class="roster__label">Vandaag</span>
+          <span class="roster__date"></span>
+        </div>
+        <div class="roster__list" data-roster="today"></div>
+      </div>
+      <div class="roster__col">
+        <div class="roster__head">
+          <span class="roster__label">Morgen</span>
+          <span class="roster__date"></span>
+        </div>
+        <div class="roster__list" data-roster="tomorrow"></div>
+      </div>
+    </div>
+
+    <p class="roster__hint reveal">
+      Op zoek naar een specifieke masseuse?
+      <a href="masseuses.html">Bekijk het hele team →</a>
+    </p>
+  </div>
+</section>
+
 <!-- ============ SFEER ============ -->
 <section class="section sfeer" aria-label="Sfeerbeelden">
   <header class="section__head container reveal">
-    <div class="eyebrow"><span class="num">05</span> Sfeerbeelden</div>
+    <div class="eyebrow"><span class="num">06</span> Sfeerbeelden</div>
     <h2 class="display">Een avond <em>bij Aurora.</em></h2>
   </header>
   <div class="sfeer__scroller">
@@ -292,7 +328,7 @@
   <div class="container visit__grid">
 
     <div class="visit__col reveal">
-      <div class="eyebrow"><span class="num">06</span> Bezoek</div>
+      <div class="eyebrow"><span class="num">07</span> Bezoek</div>
       <h2 class="display">Heidebloemstraat 79.</h2>
       <p class="visit__addr">
         Heidebloemstraat 79<br>
@@ -309,7 +345,7 @@
     </div>
 
     <div class="visit__col reveal">
-      <div class="eyebrow"><span class="num">07</span> Openingstijden</div>
+      <div class="eyebrow"><span class="num">08</span> Openingstijden</div>
       <h2 class="display"><em>Ma – Za.</em></h2>
       <table class="hours">
         <tbody>
@@ -476,6 +512,6 @@
   </div>
 </div>
 
-<script src="js/main.js?v=6"></script>
+<script src="js/main.js?v=7"></script>
 </body>
 </html>

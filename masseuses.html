@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=6">
+  <link rel="stylesheet" href="css/style.css?v=7">
 </head>
 <body>
 
@@ -293,7 +293,13 @@
   <div class="masseuse-modal__backdrop" data-close-masseuse></div>
   <div class="masseuse-modal__panel">
     <button class="masseuse-modal__close" data-close-masseuse aria-label="Sluiten">×</button>
-    <div class="masseuse-modal__photo" id="masseuse-modal-photo"></div>
+    <div class="masseuse-modal__gallery">
+      <div class="masseuse-modal__photo" id="masseuse-modal-photo"></div>
+      <button class="masseuse-modal__arrow masseuse-modal__arrow--prev" id="masseuse-modal-prev" aria-label="Vorige foto" hidden>‹</button>
+      <button class="masseuse-modal__arrow masseuse-modal__arrow--next" id="masseuse-modal-next" aria-label="Volgende foto" hidden>›</button>
+      <span class="masseuse-modal__counter" id="masseuse-modal-counter" hidden></span>
+      <div class="masseuse-modal__thumbs" id="masseuse-modal-thumbs" hidden></div>
+    </div>
     <div class="masseuse-modal__copy">
       <div class="eyebrow"><span class="num">Aurora</span> · masseuse</div>
       <h2 class="masseuse-modal__name" id="masseuse-modal-name"></h2>
@@ -379,6 +385,6 @@
   </div>
 </div>
 
-<script src="js/main.js?v=6"></script>
+<script src="js/main.js?v=7"></script>
 </body>
 </html>

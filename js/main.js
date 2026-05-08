@@ -48,6 +48,13 @@ const SERVICES = {
 // Booking variant: "request" (this build) or "cal" (Cal.com proxy — see api/_cal.js)
 const BOOKING_MODE = "request";
 
+// Cache-bust version. Appended to image/video URLs to force re-download
+// after we replace asset *contents* without changing the path. The
+// vercel.json sets immutable cache headers on .jpg/.mp4, so without this
+// edges + browsers serve stale copies. Bump when assets change.
+const CACHE_BUST = "v=7";
+const cb = (u) => (u && !u.includes("?") ? `${u}?${CACHE_BUST}` : u);
+
 // API endpoint for request-booking variant
 const BOOKING_ENDPOINT = "/api/booking-request";
 
@@ -85,10 +92,12 @@ $$(".nav__links a").forEach((a) =>
 // ---------- BACKGROUND-IMAGE HYDRATION -------------------------------
 // Set backgroundImage directly — bulletproof. Some CSS interactions
 // in the full page were swallowing the var(--img) approach.
+// All URLs are cache-busted so replaced asset contents are picked up
+// despite the immutable Cache-Control header in vercel.json.
 $$("[data-img]").forEach((el) => {
   const src = el.getAttribute("data-img");
   if (!src) return;
-  el.style.backgroundImage = `url("${src}")`;
+  el.style.backgroundImage = `url("${cb(src)}")`;
   el.style.backgroundSize = "cover";
   el.style.backgroundPosition = "center";
   el.style.backgroundRepeat = "no-repeat";
@@ -126,7 +135,7 @@ if (heroVideos.length) {
   heroVideos.forEach((v) => {
     const src = v.getAttribute("data-src");
     if (src) {
-      v.src = src;
+      v.src = cb(src);
       v.preload = "metadata";  // override any preload="none" so we know duration
       v.load();
     }
@@ -422,26 +431,41 @@ on(btnSubmit, "click", async () => {
 });
 
 // ---------- MASSEUSE DETAIL MODAL ------------------------------------
+// weekdays use JS Date.getDay() values: Sun=0, Mon=1, Tue=2, Wed=3,
+// Thu=4, Fri=5, Sat=6. The roster on the homepage filters by these.
 const MASSEUSES_DATA = {
   isabel: {
     name: "Isabel",
-    photo: "images/masseuses/isabel.jpg",
+    photos: [
+      "images/masseuses/isabel.jpg",
+      "images/masseuses/isabel-2.jpg",
+      "images/masseuses/isabel-3.jpg",
+    ],
     tagline: "Slank · donkerblond · gevangen ogen",
     bio: "Een slanke verschijning met lange donkerblonde haren en een blik die langzaam binnenkomt. Beweegt nauwkeurig en kalm — een vaste favoriet voor wie van rust met spanning houdt.",
     specialties: ["Hot Sensual Tantra", "Lingam Massage", "Body to Body met warme olie"],
     days: "Maandag · Dinsdag · Donderdag · Zaterdag",
+    weekdays: [1, 2, 4, 6],
   },
   paula: {
     name: "Paula",
-    photo: "images/masseuses/paula.jpg",
+    photos: [
+      "images/masseuses/paula.jpg",
+      "images/masseuses/paula-2.jpg",
+    ],
     tagline: "Atletisch · exotisch · vloeiend Nederlands",
     bio: "Getinte huid en een atletisch postuur, met een exotische uitstraling. Spreekt vloeiend Nederlands en weet sterke handen met aandacht te combineren.",
     specialties: ["Hot Sensual Tantra", "Lingam Massage", "Luxe Arrangement 2"],
     days: "Woensdag · Vrijdag · soms zaterdag",
+    weekdays: [3, 5, 6],
   },
   jessy: {
     name: "Jessy",
-    photo: "images/masseuses/jessy.jpg",
+    photos: [
+      "images/masseuses/jessy.jpg",
+      "images/masseuses/jessy-2.jpg",
+      "images/masseuses/jessy-3.jpg",
+    ],
     tagline: "Latina · lang donkerblond · volle rondingen",
     bio: "Een echte Latina met lang donkerblond haar en volle rondingen. Speels, warm, volledig in haar element bij langere sensuele ritueelen.",
     specialties: [
@@ -449,10 +473,14 @@ const MASSEUSES_DATA = {
       "Luxe Arrangement 2", "Stoute Massage", "Body to Body met warme olie",
     ],
     days: "Dinsdag · Woensdag · Vrijdag · Zaterdag",
+    weekdays: [2, 3, 5, 6],
   },
   rosalie: {
     name: "Rosalie",
-    photo: "images/masseuses/rosalie.jpg",
+    photos: [
+      "images/masseuses/rosalie.jpg",
+      "images/masseuses/rosalie-2.jpg",
+    ],
     tagline: "Nederlandse blondine · ervaren · veelzijdig",
     bio: "Verleidelijke ervaren Nederlandse blondine met vrouwelijke rondingen. Rustig, gezellig, met humor — en een van onze meest veelzijdige masseuses op de kaart.",
     specialties: [
@@ -461,10 +489,15 @@ const MASSEUSES_DATA = {
       "Soft SM", "Extreme Massage", "Luxe Arrangementen",
     ],
     days: "Maandag · Dinsdag · Donderdag · Vrijdag",
+    weekdays: [1, 2, 4, 5],
   },
   lisa: {
     name: "Lisa",
-    photo: "images/masseuses/lisa.jpg",
+    photos: [
+      "images/masseuses/lisa.jpg",
+      "images/masseuses/lisa-2.jpg",
+      "images/masseuses/lisa-3.jpg",
+    ],
     tagline: "Spaanse brunette · stijlvol · betoverende glimlach",
     bio: "Slanke, sensuele Spaanse dame — een stijlvolle brunette met een glimlach die de kamer opent. Houdt van langzame, lange massages met veel huidcontact.",
     specialties: [
@@ -473,10 +506,14 @@ const MASSEUSES_DATA = {
       "Hamam Happiness Tantra",
     ],
     days: "Maandag · Woensdag · Donderdag · Vrijdag",
+    weekdays: [1, 3, 4, 5],
   },
   natasja: {
     name: "Natasja",
-    photo: "images/masseuses/natasja.jpg",
+    photos: [
+      "images/masseuses/natasja.jpg",
+      "images/masseuses/natasja-2.jpg",
+    ],
     tagline: "Donkerblond · ervaren · professioneel",
     bio: "Mooie vrouw met halflang donkerblond haar en jaren ervaring in sensuele massage. Bekend om een rustige, professionele aanpak.",
     specialties: [
@@ -484,10 +521,14 @@ const MASSEUSES_DATA = {
       "Nuru", "Duo Massage", "Russian Touch", "Body to Body", "Stoute Massage",
     ],
     days: "Dinsdag · Woensdag · Donderdag · Vrijdag · Zaterdag",
+    weekdays: [2, 3, 4, 5, 6],
   },
   lara: {
     name: "Lara",
-    photo: "images/masseuses/lara.jpg",
+    photos: [
+      "images/masseuses/lara.jpg",
+      "images/masseuses/lara-2.jpg",
+    ],
     tagline: "Zuid-Amerikaans · vrouwelijke rondingen · vrolijk",
     bio: "Exotische Zuid-Amerikaanse dame met lange donkere haren, vrouwelijke rondingen en een vrolijke uitstraling. Een echte vlinder in de kamer.",
     specialties: [
@@ -496,10 +537,15 @@ const MASSEUSES_DATA = {
       "Prostaat Tantra", "Stoute Massage",
     ],
     days: "Dinsdag · Woensdag · Donderdag",
+    weekdays: [2, 3, 4],
   },
   anna: {
     name: "Anna",
-    photo: "images/masseuses/anna.jpg",
+    photos: [
+      "images/masseuses/anna.jpg",
+      "images/masseuses/anna-2.jpg",
+      "images/masseuses/anna-3.jpg",
+    ],
     tagline: "Nederlands · natuurlijke rondingen · cup D",
     bio: "Een intrigerende Nederlandse dame met natuurlijke rondingen, cup D. Warm, ontspannen en heerlijk aanwezig in elke aanraking.",
     specialties: [
@@ -508,10 +554,16 @@ const MASSEUSES_DATA = {
       "Duo Massage", "Koppel-arrangementen",
     ],
     days: "Maandag · Donderdag · Vrijdag · Zaterdag",
+    weekdays: [1, 4, 5, 6],
   },
   dehlia: {
     name: "Dehlia",
-    photo: "images/masseuses/dehlia.jpg",
+    photos: [
+      "images/masseuses/dehlia.jpg",
+      "images/masseuses/dehlia-2.jpg",
+      "images/masseuses/dehlia-3.jpg",
+      "images/masseuses/dehlia-4.jpg",
+    ],
     tagline: "Donkere krullen · blauwe ogen · enthousiast",
     bio: "Enthousiaste, vrolijke en lichtjes mysterieuze schoonheid met donkere krullen en blauwe ogen. Eén van onze breedst opgeleide masseuses.",
     specialties: [
@@ -521,10 +573,13 @@ const MASSEUSES_DATA = {
       "Luxe Arrangementen",
     ],
     days: "Maandag · Woensdag · Vrijdag",
+    weekdays: [1, 3, 5],
   },
   jacky: {
     name: "Jacky",
-    photo: "images/masseuses/jacky.jpg",
+    photos: [
+      "images/masseuses/jacky.jpg",
+    ],
     tagline: "Zuid-Europees · slank · Nederlandstalig",
     bio: "Mooie lieve slanke brunette van Zuid-Europese afkomst. Spreekt Nederlands en heeft jarenlange massage-ervaring in een verfijnde, sensuele stijl.",
     specialties: [
@@ -533,18 +588,28 @@ const MASSEUSES_DATA = {
       "Prostaat Tantra", "Body to Body", "Luxe Arrangementen", "Stoute Massage",
     ],
     days: "Woensdag · Vrijdag (en op afspraak)",
+    weekdays: [3, 5],
   },
   "jenna-rose": {
     name: "Jenna Rose",
-    photo: "images/masseuses/jenna-rose.jpg",
+    photos: [
+      "images/masseuses/jenna-rose.jpg",
+      "images/masseuses/jenna-rose-2.jpg",
+      "images/masseuses/jenna-rose-3.jpg",
+      "images/masseuses/jenna-rose-4.jpg",
+      "images/masseuses/jenna-rose-5.jpg",
+    ],
     tagline: "Lang · slank · Nederlands · 'Girl next door'",
     bio: "Lang, slank en Nederlands — de 'Girl next door' met ondeugende ogen en een passie voor erotische massage.",
     specialties: ["Lingam Massage", "Hot Sensual Tantra"],
     days: "Dinsdag · Vrijdag",
+    weekdays: [2, 5],
   },
   sera: {
     name: "Sera",
-    photo: "images/masseuses/sera.jpg",
+    photos: [
+      "images/masseuses/sera.jpg",
+    ],
     tagline: "Lang · slank · Nederlands · lang blond haar",
     bio: "Lange slanke Nederlandse dame met lang blond haar. Werkt graag in stilte, met aandacht voor adem en ritme.",
     specialties: [
@@ -553,10 +618,15 @@ const MASSEUSES_DATA = {
       "Extreme Massage", "Prostaat Tantra", "Duo Massage", "Luxe Arrangementen",
     ],
     days: "Maandag · Donderdag · Zaterdag",
+    weekdays: [1, 4, 6],
   },
   wendy: {
     name: "Wendy",
-    photo: "images/masseuses/wendy.jpg",
+    photos: [
+      "images/masseuses/wendy.jpg",
+      "images/masseuses/wendy-2.jpg",
+      "images/masseuses/wendy-3.jpg",
+    ],
     tagline: "Slanke knappe blondine · subtiel · attent",
     bio: "Slanke knappe blondine met massages die professioneel, subtiel en attent zijn. Houdt van het opbouwen van spanning in stilte.",
     specialties: [
@@ -564,10 +634,13 @@ const MASSEUSES_DATA = {
       "Hot Sensual Tantra", "Lingam Supérieur", "Lingam Massage",
     ],
     days: "Maandag · Donderdag · Zaterdag",
+    weekdays: [1, 4, 6],
   },
   alex: {
     name: "Alex",
-    photo: "images/masseuses/alex.jpg",
+    photos: [
+      "images/masseuses/alex.jpg",
+    ],
     tagline: "Mannelijke masseur · ervaren · rustig",
     bio: "Een rustige mannelijke masseur met uitgebreide massage-ervaring. Werkt op afspraak en is met name geliefd bij dames en koppels.",
     specialties: [
@@ -576,12 +649,17 @@ const MASSEUSES_DATA = {
       "Body to Body met warme olie", "Soft SM", "Luxe Arrangementen (ook koppels)",
     ],
     days: "Maandag t/m zaterdag · alleen op afspraak",
+    weekdays: [1, 2, 3, 4, 5, 6],
   },
 };
 
 const masseuseModal = $("#masseuse-modal");
 if (masseuseModal) {
   const mPhoto       = $("#masseuse-modal-photo");
+  const mThumbs      = $("#masseuse-modal-thumbs");
+  const mCounter     = $("#masseuse-modal-counter");
+  const mPrev        = $("#masseuse-modal-prev");
+  const mNext        = $("#masseuse-modal-next");
   const mName        = $("#masseuse-modal-name");
   const mTagline     = $("#masseuse-modal-tagline");
   const mBio         = $("#masseuse-modal-bio");
@@ -589,10 +667,31 @@ if (masseuseModal) {
   const mDays        = $("#masseuse-modal-days");
   const mBookBtn     = $("#masseuse-modal-book");
 
+  let galleryPhotos = [];
+  let galleryIdx = 0;
+
+  function showPhoto(i) {
+    if (!galleryPhotos.length) return;
+    galleryIdx = (i + galleryPhotos.length) % galleryPhotos.length;
+    mPhoto.style.backgroundImage = `url("${cb(galleryPhotos[galleryIdx])}")`;
+    if (mCounter) mCounter.textContent = `${galleryIdx + 1} / ${galleryPhotos.length}`;
+    if (mThumbs) {
+      $$(".masseuse-modal__thumb", mThumbs).forEach((t, n) =>
+        t.classList.toggle("is-active", n === galleryIdx),
+      );
+    }
+    const single = galleryPhotos.length <= 1;
+    if (mPrev) mPrev.hidden = single;
+    if (mNext) mNext.hidden = single;
+    if (mCounter) mCounter.hidden = single;
+  }
+
   function openMasseuse(slug) {
     const m = MASSEUSES_DATA[slug];
     if (!m) return;
-    mPhoto.style.backgroundImage = `url("${m.photo}")`;
+    galleryPhotos = m.photos && m.photos.length ? m.photos : [m.photo].filter(Boolean);
+    galleryIdx = 0;
+
     mName.textContent = m.name;
     mTagline.textContent = m.tagline || "";
     mBio.textContent = m.bio || "";
@@ -604,6 +703,21 @@ if (masseuseModal) {
     });
     mDays.textContent = m.days || "";
     mBookBtn.dataset.preference = m.name;
+
+    if (mThumbs) {
+      mThumbs.innerHTML = "";
+      mThumbs.hidden = galleryPhotos.length <= 1;
+      galleryPhotos.forEach((src, i) => {
+        const t = document.createElement("button");
+        t.type = "button";
+        t.className = "masseuse-modal__thumb";
+        t.style.backgroundImage = `url("${cb(src)}")`;
+        t.setAttribute("aria-label", `Foto ${i + 1}`);
+        on(t, "click", () => showPhoto(i));
+        mThumbs.appendChild(t);
+      });
+    }
+    showPhoto(0);
 
     masseuseModal.hidden = false;
     document.body.style.overflow = "hidden";
@@ -618,8 +732,13 @@ if (masseuseModal) {
     on(btn, "click", () => openMasseuse(btn.getAttribute("data-masseuse"))),
   );
   $$("[data-close-masseuse]").forEach((b) => on(b, "click", closeMasseuse));
+  on(mPrev, "click", () => showPhoto(galleryIdx - 1));
+  on(mNext, "click", () => showPhoto(galleryIdx + 1));
   on(document, "keydown", (e) => {
-    if (e.key === "Escape" && !masseuseModal.hidden) closeMasseuse();
+    if (masseuseModal.hidden) return;
+    if (e.key === "Escape") closeMasseuse();
+    else if (e.key === "ArrowLeft") showPhoto(galleryIdx - 1);
+    else if (e.key === "ArrowRight") showPhoto(galleryIdx + 1);
   });
 
   // "Reserveer met deze masseuse" — close detail, open booking modal with name pre-filled
@@ -633,6 +752,72 @@ if (masseuseModal) {
     }, 0);
   });
 }
+
+// ---------- HOMEPAGE: VANDAAG / MORGEN ROSTER ------------------------
+// Renders into [data-roster] elements based on each masseuse's weekdays.
+// We don't claim a hard "today" — bezetting wisselt — but a daily filter
+// gives a representative list and matches what auroramassages.nl shows.
+(function renderRoster() {
+  const slots = $$("[data-roster]");
+  if (!slots.length) return;
+
+  const NL_WEEKDAY = ["zondag","maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag"];
+  const NL_MONTH   = ["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"];
+
+  const today = new Date();
+  const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+
+  function rosterFor(date) {
+    const dow = date.getDay();
+    const entries = Object.entries(MASSEUSES_DATA)
+      .filter(([, m]) => Array.isArray(m.weekdays) && m.weekdays.includes(dow))
+      .map(([slug, m]) => ({ slug, m }));
+    // Deterministic shuffle by date so the order is stable but rotates daily.
+    const seed = date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
+    let s = seed;
+    const rand = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+    for (let i = entries.length - 1; i > 0; i--) {
+      const j = Math.floor(rand() * (i + 1));
+      [entries[i], entries[j]] = [entries[j], entries[i]];
+    }
+    return entries.slice(0, 8);
+  }
+
+  function dateLabel(d) {
+    return `${NL_WEEKDAY[d.getDay()]} ${d.getDate()} ${NL_MONTH[d.getMonth()]}`;
+  }
+
+  slots.forEach((slot) => {
+    const which = slot.getAttribute("data-roster"); // "today" | "tomorrow"
+    const date  = which === "tomorrow" ? tomorrow : today;
+    const list  = rosterFor(date);
+    slot.innerHTML = "";
+
+    const dateEl = slot.previousElementSibling
+      && slot.previousElementSibling.classList.contains("roster__date")
+      ? slot.previousElementSibling : null;
+    if (dateEl) dateEl.textContent = dateLabel(date);
+
+    if (!list.length) {
+      const p = document.createElement("p");
+      p.className = "roster__empty";
+      p.textContent = "Bel ons voor de actuele bezetting.";
+      slot.appendChild(p);
+      return;
+    }
+
+    list.forEach(({ slug, m }) => {
+      const card = document.createElement("a");
+      card.className = "roster__card";
+      card.href = `masseuses.html#${slug}`;
+      card.innerHTML = `
+        <span class="roster__photo" style="background-image:url('${cb((m.photos && m.photos[0]) || m.photo)}')"></span>
+        <span class="roster__name">${m.name}</span>
+      `;
+      slot.appendChild(card);
+    });
+  });
+})();
 
 function showConfirm(p, serverOk) {
   state.step = "confirm";

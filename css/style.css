@@ -547,6 +547,75 @@ button { font-family: inherit; cursor: pointer; }
   .suite-row:nth-child(2n) .suite-row__copy { margin-left: 0; }
 }
 
+/* ============ ROSTER (today / tomorrow) ============ */
+.roster__grid {
+  display: grid; gap: clamp(40px, 5vw, 64px);
+  grid-template-columns: 1fr 1fr;
+}
+.roster__col {
+  border-top: 1px solid var(--gold);
+  padding-top: 28px;
+}
+.roster__head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.roster__label {
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(22px, 2.4vw, 30px);
+  color: var(--bone);
+}
+.roster__date {
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--bone-dim); font-weight: 500;
+}
+.roster__list {
+  display: grid; gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+.roster__card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .35s var(--ease);
+}
+.roster__card:hover { transform: translateY(-3px); }
+.roster__photo {
+  display: block;
+  aspect-ratio: 4 / 5;
+  background: var(--surface) center/cover no-repeat;
+  border: 1px solid var(--line-soft);
+  margin-bottom: 10px;
+  filter: saturate(.92) contrast(1.04) brightness(.96);
+  transition: filter .35s var(--ease), border-color .35s var(--ease);
+}
+.roster__card:hover .roster__photo {
+  filter: saturate(1.05) contrast(1.05) brightness(1);
+  border-color: var(--gold);
+}
+.roster__name {
+  display: block;
+  font-family: var(--serif); font-weight: 400;
+  font-size: 18px; color: var(--bone);
+  letter-spacing: -0.005em;
+}
+.roster__empty {
+  font-family: var(--serif); font-style: italic;
+  color: var(--bone-dim); margin: 0;
+}
+.roster__hint {
+  margin: clamp(40px, 5vw, 56px) 0 0;
+  text-align: center;
+  font-family: var(--serif); font-style: italic;
+  color: var(--bone-dim);
+}
+.roster__hint a { color: var(--gold); border-bottom: 1px solid var(--gold-soft); padding-bottom: 2px; }
+.roster__hint a:hover { border-color: var(--gold); }
+@media (max-width: 880px) {
+  .roster__grid { grid-template-columns: 1fr; gap: 56px; }
+}
+
 /* ============ SFEER (horizontal scroll) ============ */
 .sfeer__scroller {
   display: flex; gap: 24px;
@@ -1068,11 +1137,58 @@ button.masseuse-card,
   font-size: 22px; line-height: 1; padding: 6px 12px;
 }
 .masseuse-modal__close:hover { color: var(--gold); border-color: var(--gold); }
+.masseuse-modal__gallery {
+  position: relative;
+  display: flex; flex-direction: column;
+  border-right: 1px solid var(--line-soft);
+  background: var(--bg-2);
+}
 .masseuse-modal__photo {
+  flex: 1;
   background: var(--surface) center/cover no-repeat;
   min-height: 420px;
-  border-right: 1px solid var(--line-soft);
+  transition: background-image .35s var(--ease);
 }
+.masseuse-modal__arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px;
+  background: rgba(9,7,10,.6); border: 1px solid var(--line);
+  color: var(--bone);
+  font-size: 22px; line-height: 1;
+  display: grid; place-items: center;
+  transition: .25s var(--ease);
+  z-index: 2;
+}
+.masseuse-modal__arrow--prev { left: 12px; }
+.masseuse-modal__arrow--next { right: 12px; }
+.masseuse-modal__arrow:hover { color: var(--gold); border-color: var(--gold); background: rgba(9,7,10,.85); }
+.masseuse-modal__counter {
+  position: absolute; bottom: 14px; right: 14px;
+  z-index: 2;
+  font-family: var(--serif); font-style: italic;
+  font-size: 13px; color: var(--bone);
+  background: rgba(9,7,10,.7);
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+}
+.masseuse-modal__thumbs {
+  display: flex; gap: 6px; padding: 10px;
+  border-top: 1px solid var(--line-soft);
+  background: var(--bg);
+  overflow-x: auto;
+}
+.masseuse-modal__thumb {
+  flex: 0 0 56px;
+  height: 70px;
+  background: var(--surface) center/cover no-repeat;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  opacity: .55;
+  transition: opacity .25s var(--ease), border-color .25s var(--ease);
+  padding: 0;
+}
+.masseuse-modal__thumb:hover { opacity: .85; border-color: var(--bone-dim); }
+.masseuse-modal__thumb.is-active { opacity: 1; border-color: var(--gold); }
 .masseuse-modal__copy {
   padding: 40px 40px 36px;
   overflow-y: auto;
