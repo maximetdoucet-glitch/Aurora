@@ -186,22 +186,40 @@ const btnNext = $("#book-next");
 const btnBack = $("#book-back");
 const btnSubmit = $("#book-submit");
 
+// Suite catalog. Slug -> human label. "" = geen voorkeur (default).
+const SUITES = {
+  egypt:    "Egypt Suite",
+  japanese: "Japanese Suite",
+  hamam:    "Hamam Suite",
+  thai:     "Thaise Suite",
+};
+
 const state = {
   step: 1, // 1..4 then "confirm"
   service: null,
+  suite: "",     // "" = geen voorkeur, otherwise SUITES key
+  masseuse: "",  // "" = geen voorkeur, otherwise MASSEUSES_DATA key
   date: null,    // Date object
   time: null,    // "HH:MM"
   formData: null,
 };
 
-function openModal(prefillService) {
-  if (prefillService && SERVICES[prefillService]) {
-    state.service = prefillService;
-    state.step = 2;
-  } else {
-    state.step = 1;
-  }
-  state.date = state.time = null;
+// Accepts either a string (service slug, legacy) or an opts object:
+//   openModal({ service: "tantra", masseuse: "isabel", suite: "egypt" })
+function openModal(serviceOrOpts) {
+  const opts = typeof serviceOrOpts === "string"
+    ? { service: serviceOrOpts }
+    : (serviceOrOpts || {});
+
+  state.service  = opts.service && SERVICES[opts.service] ? opts.service : null;
+  state.suite    = (opts.suite && SUITES[opts.suite]) ? opts.suite : "";
+  state.masseuse = (opts.masseuse && MASSEUSES_DATA[opts.masseuse]) ? opts.masseuse : "";
+  state.date     = null;
+  state.time     = null;
+  // Always start at step 1 — even with prefill, the user may want to
+  // adjust suite/masseuse before continuing.
+  state.step     = 1;
+
   modal.hidden = false;
   document.body.style.overflow = "hidden";
   renderStep();
@@ -211,8 +229,15 @@ function closeModal() {
   modal.hidden = true;
   document.body.style.overflow = "";
   // reset state so a reopen starts fresh
-  state.step = 1; state.service = null; state.date = null; state.time = null;
+  state.step = 1;
+  state.service = null;
+  state.suite = "";
+  state.masseuse = "";
+  state.date = null;
+  state.time = null;
   $$(".book__service.is-selected", modal).forEach((b) => b.classList.remove("is-selected"));
+  $$(".book__suite.is-selected", modal).forEach((b) => b.classList.remove("is-selected"));
+  $$(".book__masseuse.is-selected", modal).forEach((b) => b.classList.remove("is-selected"));
   $$(".book__slot.is-selected", modal).forEach((b) => b.classList.remove("is-selected"));
   $("#book-form").reset();
 }
@@ -231,6 +256,15 @@ $$(".book__service").forEach((btn) =>
     $$(".book__service").forEach((b) => b.classList.remove("is-selected"));
     btn.classList.add("is-selected");
     state.service = btn.getAttribute("data-service");
+  }),
+);
+
+// Step 1: suites (optional)
+$$(".book__suite").forEach((btn) =>
+  on(btn, "click", () => {
+    $$(".book__suite").forEach((b) => b.classList.remove("is-selected"));
+    btn.classList.add("is-selected");
+    state.suite = btn.getAttribute("data-suite") || "";
   }),
 );
 
@@ -333,12 +367,18 @@ function renderSlots() {
 
 // Step navigation
 function renderStep() {
-  // pre-select service if openModal prefilled it
+  // pre-select service / suite / masseuse if openModal prefilled them
   if (state.service) {
     $$(".book__service").forEach((b) => {
-      if (b.getAttribute("data-service") === state.service) b.classList.add("is-selected");
+      b.classList.toggle("is-selected", b.getAttribute("data-service") === state.service);
     });
   }
+  $$(".book__suite").forEach((b) => {
+    b.classList.toggle("is-selected", (b.getAttribute("data-suite") || "") === state.suite);
+  });
+  $$(".book__masseuse").forEach((b) => {
+    b.classList.toggle("is-selected", (b.getAttribute("data-masseuse") || "") === state.masseuse);
+  });
 
   // Update step indicators
   stepsList.forEach((li) => {
@@ -396,12 +436,16 @@ on(btnSubmit, "click", async () => {
   const payload = {
     service: state.service,
     serviceLabel: SERVICES[state.service],
+    suite: state.suite || "",
+    suiteLabel: state.suite ? SUITES[state.suite] : "",
+    masseuse: state.masseuse || "",
+    masseuseLabel: state.masseuse && MASSEUSES_DATA[state.masseuse]
+      ? MASSEUSES_DATA[state.masseuse].name : "",
     date: fmtDate(state.date),
     time: state.time,
     name: fd.get("name"),
     phone: fd.get("phone"),
     email: fd.get("email") || "",
-    preference: fd.get("preference") || "",
     notes: fd.get("notes") || "",
     source: location.host,
   };
@@ -702,7 +746,7 @@ if (masseuseModal) {
       mSpecialties.appendChild(li);
     });
     mDays.textContent = m.days || "";
-    mBookBtn.dataset.preference = m.name;
+    mBookBtn.dataset.masseuseSlug = slug;
 
     if (mThumbs) {
       mThumbs.innerHTML = "";
@@ -741,17 +785,58 @@ if (masseuseModal) {
     else if (e.key === "ArrowRight") showPhoto(galleryIdx + 1);
   });
 
-  // "Reserveer met deze masseuse" — close detail, open booking modal with name pre-filled
+  // "Reserveer met deze masseuse" — close detail, open booking modal
+  // with this masseuse pre-selected in step 1.
   on(mBookBtn, "click", () => {
-    const pref = mBookBtn.dataset.preference || "";
+    const slug = mBookBtn.dataset.masseuseSlug || "";
     closeMasseuse();
-    if (typeof openModal === "function") openModal();
-    setTimeout(() => {
-      const prefField = document.querySelector('#book-form input[name="preference"]');
-      if (prefField) prefField.value = pref;
-    }, 0);
+    if (typeof openModal === "function") openModal({ masseuse: slug });
   });
 }
+
+// ---------- BOOKING: MASSEUSE PICKER (chips in step 1) ---------------
+// Built dynamically from MASSEUSES_DATA so we don't duplicate names
+// across three pages. "Geen voorkeur" comes first and is selected
+// by default.
+(function buildBookMasseuseChips() {
+  const wrap = $("#book-masseuses");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+
+  const any = document.createElement("button");
+  any.type = "button";
+  any.className = "book__masseuse book__masseuse--any is-selected";
+  any.setAttribute("data-masseuse", "");
+  any.setAttribute("data-label", "Geen voorkeur");
+  any.innerHTML = `
+    <span class="book__masseuse-photo book__masseuse-photo--any" aria-hidden="true">★</span>
+    <span class="book__masseuse-name">Geen voorkeur</span>
+  `;
+  wrap.appendChild(any);
+
+  Object.entries(MASSEUSES_DATA).forEach(([slug, m]) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "book__masseuse";
+    btn.setAttribute("data-masseuse", slug);
+    btn.setAttribute("data-label", m.name);
+    const photoSrc = (m.photos && m.photos[0]) || "";
+    btn.innerHTML = `
+      <span class="book__masseuse-photo" style="background-image:url('${cb(photoSrc)}')"></span>
+      <span class="book__masseuse-name">${m.name}</span>
+    `;
+    wrap.appendChild(btn);
+  });
+
+  // Wire up click handlers (delegation on the wrap)
+  on(wrap, "click", (e) => {
+    const chip = e.target.closest(".book__masseuse");
+    if (!chip) return;
+    $$(".book__masseuse", wrap).forEach((b) => b.classList.remove("is-selected"));
+    chip.classList.add("is-selected");
+    state.masseuse = chip.getAttribute("data-masseuse") || "";
+  });
+})();
 
 // ---------- AMBIENT AUDIO (homepage spa loop) ------------------------
 // Soft background audio. Off by default — browsers block autoplay-with-
@@ -885,19 +970,25 @@ function showConfirm(p, serverOk) {
   const dateLabel = state.date.toLocaleDateString("nl-NL", {
     weekday: "long", day: "numeric", month: "long", year: "numeric",
   });
-  $("#book-summary").textContent =
-    `${p.serviceLabel} · ${dateLabel} · ${p.time}`;
+  const summaryParts = [p.serviceLabel];
+  if (p.suiteLabel)    summaryParts.push(p.suiteLabel);
+  if (p.masseuseLabel) summaryParts.push(p.masseuseLabel);
+  summaryParts.push(dateLabel, p.time);
+  $("#book-summary").textContent = summaryParts.join(" · ");
 
   // Build pre-filled WhatsApp message for the customer to send
   const lines = [
     "Reservering Aurora Massages",
     `Massage: ${p.serviceLabel}`,
+  ];
+  if (p.suiteLabel)    lines.push(`Suite: ${p.suiteLabel}`);
+  if (p.masseuseLabel) lines.push(`Masseuse: ${p.masseuseLabel}`);
+  lines.push(
     `Datum: ${dateLabel}`,
     `Tijd: ${p.time}`,
     `Naam: ${p.name}`,
     `Telefoon: ${p.phone}`,
-  ];
-  if (p.preference) lines.push(`Voorkeur: ${p.preference}`);
+  );
   if (p.notes) lines.push(`Wensen: ${p.notes}`);
   const waText = encodeURIComponent(lines.join("\n"));
   $("#book-wa").href = `https://wa.me/${SHOP.whatsapp}?text=${waText}`;

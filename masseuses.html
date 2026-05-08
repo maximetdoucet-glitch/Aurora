@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=9">
+  <link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body>
 
@@ -345,12 +345,34 @@
     </ol>
     <div class="book__body">
       <section class="book__step is-active" data-step="1">
-        <div class="book__services">
-          <button class="book__service" data-service="tantra"  data-label="Tantra">Tantra</button>
-          <button class="book__service" data-service="b2b"     data-label="Body 2 Body">Body 2 Body</button>
-          <button class="book__service" data-service="hamam"   data-label="Hamam">Hamam</button>
-          <button class="book__service" data-service="extreme" data-label="Extreme">Extreme</button>
+        <div class="book__group">
+          <div class="book__group-label">Massage <span class="book__group-meta">verplicht</span></div>
+          <div class="book__services">
+            <button class="book__service" data-service="tantra"  data-label="Tantra">Tantra</button>
+            <button class="book__service" data-service="b2b"     data-label="Body 2 Body">Body 2 Body</button>
+            <button class="book__service" data-service="hamam"   data-label="Hamam">Hamam</button>
+            <button class="book__service" data-service="extreme" data-label="Extreem">Extreem</button>
+          </div>
         </div>
+
+        <div class="book__group">
+          <div class="book__group-label">Suite <span class="book__group-meta">optioneel</span></div>
+          <div class="book__suites">
+            <button class="book__suite is-any" data-suite=""         data-label="Geen voorkeur">Geen voorkeur</button>
+            <button class="book__suite"        data-suite="egypt"    data-label="Egypt Suite">Egypt</button>
+            <button class="book__suite"        data-suite="japanese" data-label="Japanese Suite">Japanese</button>
+            <button class="book__suite"        data-suite="hamam"    data-label="Hamam Suite">Hamam</button>
+            <button class="book__suite"        data-suite="thai"     data-label="Thaise Suite">Thaise</button>
+          </div>
+        </div>
+
+        <div class="book__group">
+          <div class="book__group-label">Masseuse <span class="book__group-meta">optioneel</span></div>
+          <div class="book__masseuses" id="book-masseuses">
+            <!-- populated by main.js from MASSEUSES_DATA -->
+          </div>
+        </div>
+
         <p class="book__hint">Tarieven en duur worden bevestigd via WhatsApp.</p>
       </section>
       <section class="book__step" data-step="2"><div class="book__cal" id="book-calendar"></div></section>
@@ -360,7 +382,6 @@
           <label><span>Naam *</span><input type="text" name="name" required autocomplete="name"></label>
           <label><span>Telefoonnummer *</span><input type="tel" name="phone" required autocomplete="tel" placeholder="+31 6 …"></label>
           <label><span>E-mail (optioneel)</span><input type="email" name="email" autocomplete="email"></label>
-          <label><span>Voorkeur masseuse / suite (optioneel)</span><input type="text" name="preference" placeholder="Bijv. Isabel, of Egypt Suite"></label>
           <label><span>Bericht / wensen (optioneel)</span><textarea name="notes" rows="3" placeholder="Allergieën, eerste keer, speciale wensen…"></textarea></label>
           <label class="book__consent"><input type="checkbox" name="consent" required><span>Ik begrijp dat Aurora mijn reservering persoonlijk via WhatsApp bevestigt.</span></label>
         </form>
@@ -385,6 +406,6 @@
   </div>
 </div>
 
-<script src="js/main.js?v=8"></script>
+<script src="js/main.js?v=9"></script>
 </body>
 </html>

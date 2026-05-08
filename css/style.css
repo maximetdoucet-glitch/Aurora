@@ -880,6 +880,97 @@ button { font-family: inherit; cursor: pointer; }
 .book__service:hover { border-color: var(--gold); color: var(--gold); }
 .book__service.is-selected { border-color: var(--gold); background: var(--gold-soft); color: var(--gold); }
 
+/* ============ BOOKING STEP 1: GROUPS, SUITES, MASSEUSES ============ */
+.book__group { margin-bottom: 24px; }
+.book__group:last-of-type { margin-bottom: 0; }
+.book__group-label {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px;
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--bone-dim); font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.book__group-meta {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  letter-spacing: 0; text-transform: none;
+  color: var(--muted); font-size: 13px;
+}
+
+.book__suites {
+  display: grid; gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+}
+.book__suite {
+  padding: 14px 10px;
+  background: var(--bg-2); border: 1px solid var(--line);
+  color: var(--bone-dim);
+  font-family: var(--serif); font-size: 16px; font-weight: 400;
+  text-align: center;
+  transition: .25s var(--ease);
+}
+.book__suite:hover { border-color: var(--gold); color: var(--gold); }
+.book__suite.is-selected {
+  border-color: var(--gold); background: var(--gold-soft); color: var(--gold);
+}
+.book__suite.is-any {
+  font-style: italic;
+}
+
+.book__masseuses {
+  display: flex; gap: 10px;
+  overflow-x: auto;
+  padding: 4px 4px 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+.book__masseuses::-webkit-scrollbar { height: 6px; }
+.book__masseuses::-webkit-scrollbar-thumb { background: var(--gold); }
+.book__masseuse {
+  flex: 0 0 86px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px;
+  padding: 8px 6px 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0;
+  color: var(--bone-dim);
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: .25s var(--ease);
+}
+.book__masseuse:hover { color: var(--bone); }
+.book__masseuse:hover .book__masseuse-photo { border-color: var(--bone-dim); }
+.book__masseuse-photo {
+  display: block;
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--surface) center/cover no-repeat;
+  border: 1px solid var(--line);
+  filter: saturate(.92) contrast(1.04) brightness(.96);
+  transition: .25s var(--ease);
+}
+.book__masseuse-photo--any {
+  display: grid; place-items: center;
+  font-family: var(--serif); font-style: italic;
+  color: var(--gold); font-size: 22px;
+  background: var(--bg-2);
+  border-color: var(--gold);
+}
+.book__masseuse-name {
+  font-size: 11px; letter-spacing: 0.06em;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.2;
+}
+.book__masseuse.is-selected { color: var(--gold); }
+.book__masseuse.is-selected .book__masseuse-photo {
+  border-color: var(--gold);
+  filter: saturate(1.05) contrast(1.05) brightness(1);
+  box-shadow: 0 0 0 2px rgba(201,132,42,.25);
+}
+
 /* calendar */
 .book__cal {
   display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
