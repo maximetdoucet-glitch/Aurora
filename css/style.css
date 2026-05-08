@@ -1665,3 +1665,282 @@ button.masseuse-card,
   .detail-row:nth-child(2n) > .detail-row__copy { order: 0; }
   .detail-row:nth-child(2n) .detail-row__copy { margin-left: 0; }
 }
+
+/* =====================================================
+   MOBILE OPTIMIZATION (phone-first refinements ≤600px)
+   Desktop and tablet rules above are untouched. This
+   block tightens type, padding, and layouts so nothing
+   reads too big or too small on a phone.
+   ===================================================== */
+@media (max-width: 600px) {
+  :root {
+    --section-y: clamp(64px, 14vw, 110px);
+    --gutter: 18px;
+  }
+
+  /* ---------- Type baseline ---------- */
+  body { font-size: 15px; }
+  .display { font-size: clamp(30px, 8.5vw, 48px); margin-bottom: 18px; }
+  .section__sub { font-size: 14px; padding: 0 8px; line-height: 1.55; }
+
+  /* ---------- Buttons (tighten letter-spacing so labels stay on one line) ---------- */
+  .btn { padding: 14px 20px; letter-spacing: 0.16em; }
+  .btn--lg { padding: 15px 22px; }
+  .btn--sm { padding: 10px 14px; font-size: 10px; letter-spacing: 0.14em; }
+
+  /* ---------- Nav ---------- */
+  .nav { padding: 14px 0; }
+  .nav.is-scrolled { padding: 10px 0; }
+  .nav__brand { gap: 10px; }
+  .nav__monogram { width: 34px; height: 34px; font-size: 19px; }
+  .nav__word { font-size: 13px; letter-spacing: 0.28em; }
+
+  /* ---------- Hero ---------- */
+  .hero__title { font-size: clamp(54px, 17vw, 92px); line-height: .92; }
+  .hero__title-sub { font-size: 15px; margin-top: 12px; line-height: 1.45; }
+  .hero__lede { display: none; }
+  .hero__corner--tl { top: 78px; left: 18px; }
+  .hero__corner--tr { display: none; }
+  .hero__eyebrow { font-size: 10px; gap: 10px; letter-spacing: 0.24em; }
+  .hero__eyebrow::before { width: 22px; }
+  .hero__text { bottom: 64px; max-width: 100%; }
+  .hero__cta {
+    flex-direction: column; align-items: stretch;
+    gap: 12px; padding: 0 8px;
+  }
+  .hero__cta .btn { width: 100%; }
+  .hero__caption { display: none; }
+  .hero__scroll { width: 18px; height: 30px; bottom: 12px; }
+
+  /* ---------- Sub-page hero (massages, suites, masseuses) ---------- */
+  .page-hero { padding: 130px 18px 56px; }
+  .page-hero h1 { font-size: clamp(38px, 12vw, 60px); margin-bottom: 14px; }
+  .page-hero__lede { font-size: 15px; line-height: 1.55; }
+
+  /* ---------- About ---------- */
+  .about__copy p { font-size: 15px; line-height: 1.75; }
+  .about__copy p:first-of-type::first-letter {
+    font-size: 3.6em; margin: 4px 8px 0 0;
+  }
+  .about__facts { padding: 22px 0 0; }
+  .about__facts li { font-size: 12px; padding: 13px 0; }
+  .about__facts li strong { font-size: 15px; }
+
+  /* ---------- Services ---------- */
+  .service-card { padding: 30px 22px; }
+  .service-card h3 { font-size: 26px; }
+  .service-card__body { font-size: 14px; margin-bottom: 22px; line-height: 1.65; }
+  .service-card__foot {
+    flex-wrap: wrap; gap: 10px; padding-top: 18px;
+  }
+  .service-card__cta { font-size: 10px; letter-spacing: 0.18em; }
+
+  /* ---------- Suites (homepage rows) ---------- */
+  .suites__list { gap: 56px; }
+  .suite-row { gap: 22px; }
+  .suite-row h3 { font-size: 30px; margin-bottom: 14px; }
+  .suite-row p { font-size: 15px; line-height: 1.7; margin-bottom: 22px; }
+  .suite-row__media { aspect-ratio: 4 / 4.6; }
+
+  /* ---------- Roster ---------- */
+  .roster__grid { gap: 36px; }
+  .roster__col { padding-top: 22px; }
+  .roster__head { margin-bottom: 18px; gap: 12px; }
+  .roster__label { font-size: 22px; }
+  .roster__date { font-size: 10px; }
+  .roster__list {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 14px;
+  }
+  .roster__name { font-size: 15px; }
+
+  /* ---------- Sfeer (horizontal scroller) ---------- */
+  .sfeer__scroller { gap: 14px; padding-bottom: 28px; }
+  .sfeer__tile { flex: 0 0 78vw; aspect-ratio: 4 / 5; }
+
+  /* ---------- Visit ---------- */
+  .visit__addr { font-size: 18px; margin-bottom: 22px; line-height: 1.45; }
+  .visit__contact li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 12px 0;
+    font-size: 14px;
+  }
+  .visit__contact li span:first-child { font-size: 10px; }
+  .hours th, .hours td { padding: 10px 0; }
+  .hours td { font-size: 16px; }
+  .visit__cta { margin-top: 26px; gap: 12px; }
+  .visit__cta .btn { width: 100%; }
+  .visit__map iframe { height: 280px; }
+
+  /* ---------- CTA strip ---------- */
+  .cta-strip { padding: 56px 0; }
+  .cta-strip .container { gap: 20px; }
+  .cta-strip .display { font-size: 24px; }
+
+  /* ---------- Footer ---------- */
+  .footer { padding: 56px 0 24px; }
+  .footer__grid { grid-template-columns: 1fr; gap: 32px; margin-bottom: 36px; }
+  .footer__brand { gap: 10px; }
+  .footer__col h4 { margin-bottom: 12px; }
+  .footer__legal {
+    font-size: 9.5px; gap: 8px; padding-top: 22px;
+    flex-direction: column; align-items: flex-start;
+  }
+
+  /* ---------- Booking modal: full-screen on phone ---------- */
+  .book__panel {
+    width: 100vw;
+    max-height: 100svh;
+    height: 100svh;
+    border: 0;
+    border-radius: 0;
+  }
+  .book__head { padding: 16px 18px; }
+  .book__head h2 { font-size: 19px; }
+  .book__close { font-size: 26px; padding: 4px 8px; }
+  .book__steps { padding: 0 14px; }
+  .book__steps li {
+    padding: 12px 2px;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+  }
+  .book__body { padding: 22px 18px; }
+  .book__foot { padding: 14px 18px; gap: 10px; }
+  .book__foot .btn { flex: 1; }
+  .book__hint { font-size: 12px; padding: 0 6px; }
+
+  /* booking step 1 */
+  .book__group { margin-bottom: 22px; }
+  .book__group-label { font-size: 10px; letter-spacing: 0.18em; }
+  .book__group-meta { font-size: 12px; }
+  .book__services { gap: 10px; }
+  .book__service { padding: 18px 12px; font-size: 17px; }
+  .book__select-trigger { font-size: 16px; padding: 13px 16px; }
+  .book__select-option { font-size: 15px; padding: 12px 16px; }
+  .book__masseuse { flex: 0 0 76px; gap: 6px; }
+  .book__masseuse-photo { width: 56px; height: 56px; }
+  .book__masseuse-photo--any { font-size: 18px; }
+  .book__masseuse-name { font-size: 10px; }
+
+  /* booking calendar + slots */
+  .book__cal-title { font-size: 19px; }
+  .book__day { font-size: 13px; }
+  .book__cal-dow { font-size: 9px; padding: 6px 0; }
+  .book__slots {
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 6px;
+  }
+  .book__slot { font-size: 13px; padding: 11px 0; }
+
+  /* booking form */
+  .book__form { gap: 14px; }
+  .book__form span { font-size: 10px; }
+  .book__form input, .book__form textarea { padding: 12px 14px; font-size: 16px; /* 16px prevents iOS auto-zoom */ }
+  .book__consent { font-size: 12px; }
+  .book__consent span { font-size: 12px; }
+  .book__confirm h3 { font-size: 26px; }
+  .book__summary { font-size: 13px; padding: 14px; }
+  .book__confirm-cta { flex-direction: column; gap: 10px; }
+  .book__confirm-cta .btn { width: 100%; }
+
+  /* ---------- Masseuse detail modal: full-screen on phone ---------- */
+  .masseuse-modal { padding: 0; }
+  .masseuse-modal__panel {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+    width: 100vw;
+    max-height: 100svh;
+    height: 100svh;
+    border: 0;
+    border-radius: 0;
+    overflow-y: auto;
+  }
+  .masseuse-modal__gallery {
+    border-right: 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .masseuse-modal__photo {
+    min-height: 50svh;
+    aspect-ratio: auto;
+  }
+  .masseuse-modal__close {
+    top: 10px; right: 10px;
+    font-size: 20px;
+    padding: 4px 10px;
+  }
+  .masseuse-modal__arrow {
+    width: 34px; height: 34px;
+    font-size: 18px;
+  }
+  .masseuse-modal__arrow--prev { left: 8px; }
+  .masseuse-modal__arrow--next { right: 8px; }
+  .masseuse-modal__counter { bottom: 10px; right: 10px; font-size: 12px; padding: 3px 8px; }
+  .masseuse-modal__thumb { flex: 0 0 48px; height: 60px; }
+  .masseuse-modal__copy { padding: 24px 18px 28px; overflow: visible; }
+  .masseuse-modal__name { font-size: 30px; }
+  .masseuse-modal__tagline { font-size: 14px; margin-bottom: 16px; }
+  .masseuse-modal__bio { font-size: 14px; margin-bottom: 22px; }
+  .masseuse-modal__section { padding-top: 18px; margin-bottom: 20px; }
+  .masseuse-modal__list li { font-size: 13px; padding: 5px 10px; }
+  .masseuse-modal__days { font-size: 16px; }
+  .masseuse-modal__hint { font-size: 12px; }
+  .masseuse-modal__cta { flex-direction: column; gap: 10px; margin-top: 22px; }
+  .masseuse-modal__cta .btn { width: 100%; }
+
+  /* ---------- Masseuses grid (page) ---------- */
+  .masseuses__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  .masseuse-card__photo { margin-bottom: 12px; }
+  .masseuse-card__name { font-size: 19px; }
+  .masseuse-card__hint { font-size: 12px; }
+
+  /* ---------- Detail rows (massages page) ---------- */
+  .detail-row { gap: 24px; margin-bottom: 70px; }
+  .detail-row h2 { font-size: 32px; margin-bottom: 16px; }
+  .detail-row__sub { font-size: 15px; margin-bottom: 16px; }
+  .detail-row__body { font-size: 15px; line-height: 1.7; margin-bottom: 18px; }
+
+  /* ---------- Variant cards ---------- */
+  .variant-grid { margin-top: 36px; }
+  .variant-card { padding: 22px 18px; }
+  .variant-card::before { top: 18px; left: 18px; width: 14px; }
+  .variant-card h4 { font-size: 19px; margin: 10px 0 10px; }
+  .variant-card p { font-size: 13px; line-height: 1.6; }
+  .variant-cta { margin-top: 32px; }
+
+  /* ---------- Value cards ---------- */
+  .value-card h3 { font-size: 24px; }
+  .value-card p { font-size: 14px; }
+
+  /* ---------- Notice ---------- */
+  .notice { padding: 20px 22px; gap: 12px; margin-top: 40px; }
+  .notice__label { font-size: 19px; }
+  .notice p { font-size: 14px; }
+
+  /* ---------- Rules grid ---------- */
+  .rules-grid h3 { font-size: 22px; }
+  .rules-grid li { font-size: 14px; padding: 10px 0; }
+}
+
+/* Very small screens — iPhone SE class (≤380px) */
+@media (max-width: 380px) {
+  .nav__word { display: none; } /* keep monogram only — saves space for burger */
+  .book__services { grid-template-columns: 1fr; }
+  .hero__title { font-size: clamp(40px, 16vw, 64px); }
+  .page-hero h1 { font-size: clamp(32px, 13vw, 48px); }
+  .masseuses__grid { gap: 14px; }
+  .masseuse-card__name { font-size: 17px; }
+  .roster__list { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+  .roster__name { font-size: 14px; }
+  .ambient { padding: 8px 12px; }
+}
+
+/* iOS Safari fix — prevent input zoom on focus by ensuring 16px minimum */
+@supports (-webkit-touch-callout: none) {
+  .book__form input,
+  .book__form textarea,
+  .book__select-trigger { font-size: max(16px, 1rem); }
+}
