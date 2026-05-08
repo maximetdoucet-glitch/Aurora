@@ -137,10 +137,12 @@ if (heroVideos.length) {
 
   const scheduleAdvanceFallback = (cur) => {
     clearTimeout(advanceTimer);
-    // wait for video metadata if not loaded yet
+    // Optional cap: data-max-seconds="2" trims a clip to ≤ 2s before advancing.
+    const cap = parseFloat(cur.getAttribute("data-max-seconds") || "0");
     const arm = () => {
-      const dur = isFinite(cur.duration) && cur.duration > 0 ? cur.duration : 5;
-      advanceTimer = setTimeout(next, (dur + 0.15) * 1000);
+      const natural = isFinite(cur.duration) && cur.duration > 0 ? cur.duration : 5;
+      const target = cap > 0 ? Math.min(natural, cap) : natural;
+      advanceTimer = setTimeout(next, (target + 0.15) * 1000);
     };
     if (cur.readyState >= 1 /* HAVE_METADATA */) arm();
     else cur.addEventListener("loadedmetadata", arm, { once: true });
@@ -418,6 +420,219 @@ on(btnSubmit, "click", async () => {
   btnSubmit.disabled = false;
   btnSubmit.textContent = "Verstuur reservering";
 });
+
+// ---------- MASSEUSE DETAIL MODAL ------------------------------------
+const MASSEUSES_DATA = {
+  isabel: {
+    name: "Isabel",
+    photo: "images/masseuses/isabel.jpg",
+    tagline: "Slank · donkerblond · gevangen ogen",
+    bio: "Een slanke verschijning met lange donkerblonde haren en een blik die langzaam binnenkomt. Beweegt nauwkeurig en kalm — een vaste favoriet voor wie van rust met spanning houdt.",
+    specialties: ["Hot Sensual Tantra", "Lingam Massage", "Body to Body met warme olie"],
+    days: "Maandag · Dinsdag · Donderdag · Zaterdag",
+  },
+  paula: {
+    name: "Paula",
+    photo: "images/masseuses/paula.jpg",
+    tagline: "Atletisch · exotisch · vloeiend Nederlands",
+    bio: "Getinte huid en een atletisch postuur, met een exotische uitstraling. Spreekt vloeiend Nederlands en weet sterke handen met aandacht te combineren.",
+    specialties: ["Hot Sensual Tantra", "Lingam Massage", "Luxe Arrangement 2"],
+    days: "Woensdag · Vrijdag · soms zaterdag",
+  },
+  jessy: {
+    name: "Jessy",
+    photo: "images/masseuses/jessy.jpg",
+    tagline: "Latina · lang donkerblond · volle rondingen",
+    bio: "Een echte Latina met lang donkerblond haar en volle rondingen. Speels, warm, volledig in haar element bij langere sensuele ritueelen.",
+    specialties: [
+      "Tantra Suprème", "Hot Sensual Tantra Savon", "Lingam Supérieur",
+      "Luxe Arrangement 2", "Stoute Massage", "Body to Body met warme olie",
+    ],
+    days: "Dinsdag · Woensdag · Vrijdag · Zaterdag",
+  },
+  rosalie: {
+    name: "Rosalie",
+    photo: "images/masseuses/rosalie.jpg",
+    tagline: "Nederlandse blondine · ervaren · veelzijdig",
+    bio: "Verleidelijke ervaren Nederlandse blondine met vrouwelijke rondingen. Rustig, gezellig, met humor — en een van onze meest veelzijdige masseuses op de kaart.",
+    specialties: [
+      "Hamam Happiness Tantra", "Tantra Suprème", "Nuru", "Lingam Massage",
+      "Duo Massage", "Yoni Massage", "Russian Touch", "Blind Date",
+      "Soft SM", "Extreme Massage", "Luxe Arrangementen",
+    ],
+    days: "Maandag · Dinsdag · Donderdag · Vrijdag",
+  },
+  lisa: {
+    name: "Lisa",
+    photo: "images/masseuses/lisa.jpg",
+    tagline: "Spaanse brunette · stijlvol · betoverende glimlach",
+    bio: "Slanke, sensuele Spaanse dame — een stijlvolle brunette met een glimlach die de kamer opent. Houdt van langzame, lange massages met veel huidcontact.",
+    specialties: [
+      "Thai Treatment", "Nuru", "Duo Massage", "Body to Body Savon",
+      "Body to Body met warme olie", "Lingam Massage", "Hot Sensual Tantra",
+      "Hamam Happiness Tantra",
+    ],
+    days: "Maandag · Woensdag · Donderdag · Vrijdag",
+  },
+  natasja: {
+    name: "Natasja",
+    photo: "images/masseuses/natasja.jpg",
+    tagline: "Donkerblond · ervaren · professioneel",
+    bio: "Mooie vrouw met halflang donkerblond haar en jaren ervaring in sensuele massage. Bekend om een rustige, professionele aanpak.",
+    specialties: [
+      "Hot Sensual Tantra", "Tantra Suprème", "Lingam Supérieur",
+      "Nuru", "Duo Massage", "Russian Touch", "Body to Body", "Stoute Massage",
+    ],
+    days: "Dinsdag · Woensdag · Donderdag · Vrijdag · Zaterdag",
+  },
+  lara: {
+    name: "Lara",
+    photo: "images/masseuses/lara.jpg",
+    tagline: "Zuid-Amerikaans · vrouwelijke rondingen · vrolijk",
+    bio: "Exotische Zuid-Amerikaanse dame met lange donkere haren, vrouwelijke rondingen en een vrolijke uitstraling. Een echte vlinder in de kamer.",
+    specialties: [
+      "Body to Body (olie en savon)", "Lingam Massage", "Hot Sensual Tantra",
+      "Nuru", "Thai Treatment", "Tantra Suprème", "Extreme Massage",
+      "Prostaat Tantra", "Stoute Massage",
+    ],
+    days: "Dinsdag · Woensdag · Donderdag",
+  },
+  anna: {
+    name: "Anna",
+    photo: "images/masseuses/anna.jpg",
+    tagline: "Nederlands · natuurlijke rondingen · cup D",
+    bio: "Een intrigerende Nederlandse dame met natuurlijke rondingen, cup D. Warm, ontspannen en heerlijk aanwezig in elke aanraking.",
+    specialties: [
+      "Lingam Massage", "Lingam Supérieur", "Tantra Suprème",
+      "Nuru", "Hot Sensual Tantra", "Body to Body met warme olie",
+      "Duo Massage", "Koppel-arrangementen",
+    ],
+    days: "Maandag · Donderdag · Vrijdag · Zaterdag",
+  },
+  dehlia: {
+    name: "Dehlia",
+    photo: "images/masseuses/dehlia.jpg",
+    tagline: "Donkere krullen · blauwe ogen · enthousiast",
+    bio: "Enthousiaste, vrolijke en lichtjes mysterieuze schoonheid met donkere krullen en blauwe ogen. Eén van onze breedst opgeleide masseuses.",
+    specialties: [
+      "Hamam Happiness Tantra", "Tantra Suprème", "Lingam Supérieur",
+      "Summer Shower", "Thai Treatment", "Blind Date", "Extreme Massage",
+      "Nuru", "Russian Touch", "Yoni Massage", "Soft SM", "Prostaat Tantra",
+      "Luxe Arrangementen",
+    ],
+    days: "Maandag · Woensdag · Vrijdag",
+  },
+  jacky: {
+    name: "Jacky",
+    photo: "images/masseuses/jacky.jpg",
+    tagline: "Zuid-Europees · slank · Nederlandstalig",
+    bio: "Mooie lieve slanke brunette van Zuid-Europese afkomst. Spreekt Nederlands en heeft jarenlange massage-ervaring in een verfijnde, sensuele stijl.",
+    specialties: [
+      "Hot Sensual Tantra", "Tantra Suprème", "Nuru", "Lingam Supérieur",
+      "Duo", "Blind Date", "Thai Treatment", "Extreme Massage",
+      "Prostaat Tantra", "Body to Body", "Luxe Arrangementen", "Stoute Massage",
+    ],
+    days: "Woensdag · Vrijdag (en op afspraak)",
+  },
+  "jenna-rose": {
+    name: "Jenna Rose",
+    photo: "images/masseuses/jenna-rose.jpg",
+    tagline: "Lang · slank · Nederlands · 'Girl next door'",
+    bio: "Lang, slank en Nederlands — de 'Girl next door' met ondeugende ogen en een passie voor erotische massage.",
+    specialties: ["Lingam Massage", "Hot Sensual Tantra"],
+    days: "Dinsdag · Vrijdag",
+  },
+  sera: {
+    name: "Sera",
+    photo: "images/masseuses/sera.jpg",
+    tagline: "Lang · slank · Nederlands · lang blond haar",
+    bio: "Lange slanke Nederlandse dame met lang blond haar. Werkt graag in stilte, met aandacht voor adem en ritme.",
+    specialties: [
+      "Yoni", "Lingam", "Tantra Suprème", "Hamam", "Nuru",
+      "Body to Body Savon", "Hot Sensual Tantra", "Soft SM",
+      "Extreme Massage", "Prostaat Tantra", "Duo Massage", "Luxe Arrangementen",
+    ],
+    days: "Maandag · Donderdag · Zaterdag",
+  },
+  wendy: {
+    name: "Wendy",
+    photo: "images/masseuses/wendy.jpg",
+    tagline: "Slanke knappe blondine · subtiel · attent",
+    bio: "Slanke knappe blondine met massages die professioneel, subtiel en attent zijn. Houdt van het opbouwen van spanning in stilte.",
+    specialties: [
+      "Russian Touch", "Nuru", "Tantra Suprème",
+      "Hot Sensual Tantra", "Lingam Supérieur", "Lingam Massage",
+    ],
+    days: "Maandag · Donderdag · Zaterdag",
+  },
+  alex: {
+    name: "Alex",
+    photo: "images/masseuses/alex.jpg",
+    tagline: "Mannelijke masseur · ervaren · rustig",
+    bio: "Een rustige mannelijke masseur met uitgebreide massage-ervaring. Werkt op afspraak en is met name geliefd bij dames en koppels.",
+    specialties: [
+      "Lingam Massage", "Lingam Supérieur", "Yoni Massage",
+      "Tantra Suprème", "Hot Sensual Tantra", "Prostaat Tantra",
+      "Body to Body met warme olie", "Soft SM", "Luxe Arrangementen (ook koppels)",
+    ],
+    days: "Maandag t/m zaterdag · alleen op afspraak",
+  },
+};
+
+const masseuseModal = $("#masseuse-modal");
+if (masseuseModal) {
+  const mPhoto       = $("#masseuse-modal-photo");
+  const mName        = $("#masseuse-modal-name");
+  const mTagline     = $("#masseuse-modal-tagline");
+  const mBio         = $("#masseuse-modal-bio");
+  const mSpecialties = $("#masseuse-modal-specialties");
+  const mDays        = $("#masseuse-modal-days");
+  const mBookBtn     = $("#masseuse-modal-book");
+
+  function openMasseuse(slug) {
+    const m = MASSEUSES_DATA[slug];
+    if (!m) return;
+    mPhoto.style.backgroundImage = `url("${m.photo}")`;
+    mName.textContent = m.name;
+    mTagline.textContent = m.tagline || "";
+    mBio.textContent = m.bio || "";
+    mSpecialties.innerHTML = "";
+    (m.specialties || []).forEach((s) => {
+      const li = document.createElement("li");
+      li.textContent = s;
+      mSpecialties.appendChild(li);
+    });
+    mDays.textContent = m.days || "";
+    mBookBtn.dataset.preference = m.name;
+
+    masseuseModal.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMasseuse() {
+    masseuseModal.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  $$(".masseuse-card[data-masseuse]").forEach((btn) =>
+    on(btn, "click", () => openMasseuse(btn.getAttribute("data-masseuse"))),
+  );
+  $$("[data-close-masseuse]").forEach((b) => on(b, "click", closeMasseuse));
+  on(document, "keydown", (e) => {
+    if (e.key === "Escape" && !masseuseModal.hidden) closeMasseuse();
+  });
+
+  // "Reserveer met deze masseuse" — close detail, open booking modal with name pre-filled
+  on(mBookBtn, "click", () => {
+    const pref = mBookBtn.dataset.preference || "";
+    closeMasseuse();
+    if (typeof openModal === "function") openModal();
+    setTimeout(() => {
+      const prefField = document.querySelector('#book-form input[name="preference"]');
+      if (prefField) prefField.value = pref;
+    }, 0);
+  });
+}
 
 function showConfirm(p, serverOk) {
   state.step = "confirm";

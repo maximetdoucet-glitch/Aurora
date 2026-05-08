@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=5">
+  <link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body>
 
@@ -59,21 +59,77 @@
       </p>
     </header>
 
-    <div class="masseuses__grid reveal">
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/isabel.jpg" aria-label="Isabel"></div><h3 class="masseuse-card__name">Isabel</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/paula.jpg" aria-label="Paula"></div><h3 class="masseuse-card__name">Paula</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/jessy.jpg" aria-label="Jessy"></div><h3 class="masseuse-card__name">Jessy</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/rosalie.jpg" aria-label="Rosalie"></div><h3 class="masseuse-card__name">Rosalie</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/lisa.jpg" aria-label="Lisa"></div><h3 class="masseuse-card__name">Lisa</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/natasja.jpg" aria-label="Natasja"></div><h3 class="masseuse-card__name">Natasja</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/lara.jpg" aria-label="Lara"></div><h3 class="masseuse-card__name">Lara</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/lena.jpg" aria-label="Lena"></div><h3 class="masseuse-card__name">Lena</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/dehlia.jpg" aria-label="Dehlia"></div><h3 class="masseuse-card__name">Dehlia</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/jacky.jpg" aria-label="Jacky"></div><h3 class="masseuse-card__name">Jacky</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/jenna-rose.jpg" aria-label="Jenna Rose"></div><h3 class="masseuse-card__name">Jenna Rose</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/sera.jpg" aria-label="Sera"></div><h3 class="masseuse-card__name">Sera</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/wendy.jpg" aria-label="Wendy"></div><h3 class="masseuse-card__name">Wendy</h3><p class="masseuse-card__hint">Aurora</p></article>
-      <article class="masseuse-card"><div class="masseuse-card__photo" data-img="images/masseuses/alex.jpg" aria-label="Alex"></div><h3 class="masseuse-card__name">Alex</h3><p class="masseuse-card__hint">Aurora</p></article>
+    <div class="masseuses__grid reveal" id="masseuses-grid">
+      <button class="masseuse-card" type="button" data-masseuse="isabel">
+        <div class="masseuse-card__photo" data-img="images/masseuses/isabel.jpg" aria-label="Isabel"></div>
+        <h3 class="masseuse-card__name">Isabel</h3>
+        <p class="masseuse-card__hint">Slank · donkerblond</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="paula">
+        <div class="masseuse-card__photo" data-img="images/masseuses/paula.jpg" aria-label="Paula"></div>
+        <h3 class="masseuse-card__name">Paula</h3>
+        <p class="masseuse-card__hint">Atletisch · exotisch</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="jessy">
+        <div class="masseuse-card__photo" data-img="images/masseuses/jessy.jpg" aria-label="Jessy"></div>
+        <h3 class="masseuse-card__name">Jessy</h3>
+        <p class="masseuse-card__hint">Latina · volle rondingen</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="rosalie">
+        <div class="masseuse-card__photo" data-img="images/masseuses/rosalie.jpg" aria-label="Rosalie"></div>
+        <h3 class="masseuse-card__name">Rosalie</h3>
+        <p class="masseuse-card__hint">Nederlandse blondine</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="lisa">
+        <div class="masseuse-card__photo" data-img="images/masseuses/lisa.jpg" aria-label="Lisa"></div>
+        <h3 class="masseuse-card__name">Lisa</h3>
+        <p class="masseuse-card__hint">Spaanse brunette</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="natasja">
+        <div class="masseuse-card__photo" data-img="images/masseuses/natasja.jpg" aria-label="Natasja"></div>
+        <h3 class="masseuse-card__name">Natasja</h3>
+        <p class="masseuse-card__hint">Donkerblond · ervaren</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="lara">
+        <div class="masseuse-card__photo" data-img="images/masseuses/lara.jpg" aria-label="Lara"></div>
+        <h3 class="masseuse-card__name">Lara</h3>
+        <p class="masseuse-card__hint">Zuid-Amerikaans · vrolijk</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="anna">
+        <div class="masseuse-card__photo" data-img="images/masseuses/anna.jpg" aria-label="Anna"></div>
+        <h3 class="masseuse-card__name">Anna</h3>
+        <p class="masseuse-card__hint">Nederlands · natuurlijk</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="dehlia">
+        <div class="masseuse-card__photo" data-img="images/masseuses/dehlia.jpg" aria-label="Dehlia"></div>
+        <h3 class="masseuse-card__name">Dehlia</h3>
+        <p class="masseuse-card__hint">Donkere krullen · blauwe ogen</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="jacky">
+        <div class="masseuse-card__photo" data-img="images/masseuses/jacky.jpg" aria-label="Jacky"></div>
+        <h3 class="masseuse-card__name">Jacky</h3>
+        <p class="masseuse-card__hint">Zuid-Europees · slank</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="jenna-rose">
+        <div class="masseuse-card__photo" data-img="images/masseuses/jenna-rose.jpg" aria-label="Jenna Rose"></div>
+        <h3 class="masseuse-card__name">Jenna Rose</h3>
+        <p class="masseuse-card__hint">Lang · slank · Nederlands</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="sera">
+        <div class="masseuse-card__photo" data-img="images/masseuses/sera.jpg" aria-label="Sera"></div>
+        <h3 class="masseuse-card__name">Sera</h3>
+        <p class="masseuse-card__hint">Lang · blond · Nederlands</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="wendy">
+        <div class="masseuse-card__photo" data-img="images/masseuses/wendy.jpg" aria-label="Wendy"></div>
+        <h3 class="masseuse-card__name">Wendy</h3>
+        <p class="masseuse-card__hint">Slanke blondine</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="alex">
+        <div class="masseuse-card__photo" data-img="images/masseuses/alex.jpg" aria-label="Alex"></div>
+        <h3 class="masseuse-card__name">Alex</h3>
+        <p class="masseuse-card__hint">Mannelijke masseur · ervaren</p>
+      </button>
     </div>
 
     <aside class="notice reveal" style="margin-top: 56px;">
@@ -232,6 +288,41 @@
   </div>
 </footer>
 
+<!-- ============ MASSEUSE DETAIL MODAL ============ -->
+<div class="masseuse-modal" id="masseuse-modal" role="dialog" aria-modal="true" aria-labelledby="masseuse-modal-name" hidden>
+  <div class="masseuse-modal__backdrop" data-close-masseuse></div>
+  <div class="masseuse-modal__panel">
+    <button class="masseuse-modal__close" data-close-masseuse aria-label="Sluiten">×</button>
+    <div class="masseuse-modal__photo" id="masseuse-modal-photo"></div>
+    <div class="masseuse-modal__copy">
+      <div class="eyebrow"><span class="num">Aurora</span> · masseuse</div>
+      <h2 class="masseuse-modal__name" id="masseuse-modal-name"></h2>
+      <p class="masseuse-modal__tagline" id="masseuse-modal-tagline"></p>
+      <p class="masseuse-modal__bio" id="masseuse-modal-bio"></p>
+
+      <div class="masseuse-modal__section">
+        <h4>Specialiteiten</h4>
+        <ul class="masseuse-modal__list" id="masseuse-modal-specialties"></ul>
+      </div>
+
+      <div class="masseuse-modal__section">
+        <h4>Aanwezig</h4>
+        <p class="masseuse-modal__days" id="masseuse-modal-days"></p>
+        <p class="masseuse-modal__hint">
+          De agenda wisselt per week. Voor de actuele bezetting bel
+          <a href="tel:+31243502776">024 350 2776</a> of geef een
+          voorkeur op bij je reservering.
+        </p>
+      </div>
+
+      <div class="masseuse-modal__cta">
+        <button class="btn btn--accent btn--lg" id="masseuse-modal-book">Reserveer met deze masseuse</button>
+        <button class="btn btn--ghost" data-close-masseuse>Sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ============ BOOKING MODAL ============ -->
 <div class="book" id="book-modal" role="dialog" aria-modal="true" aria-labelledby="book-title" hidden>
   <div class="book__backdrop" data-close-book></div>
@@ -288,6 +379,6 @@
   </div>
 </div>
 
-<script src="js/main.js?v=5"></script>
+<script src="js/main.js?v=6"></script>
 </body>
 </html>
