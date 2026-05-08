@@ -33,8 +33,8 @@ Where to get a free, commercially-licensed track:
     https://freemusicarchive.org/
 
 DO NOT use Spotify rips, copyrighted soundtracks, or anything you do
-not have a license for. The website's footer says "by Magic Fingers" —
-don't put us at risk.
+not have a license for. The website credits MG Visuals — don't put
+the project at risk.
 
 After you save the file, hard-refresh the homepage once
 (Ctrl+Shift+R) to pick it up.
