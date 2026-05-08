@@ -687,6 +687,43 @@ button { font-family: inherit; cursor: pointer; }
   .roster__grid { grid-template-columns: 1fr; gap: 56px; }
 }
 
+/* ============ TEAM SECTION (homepage funnel anchor) ============ */
+/* Divider that separates the today/tomorrow strip from the full team grid */
+.team__divider {
+  display: flex; align-items: center; gap: 18px;
+  margin: clamp(56px, 7vw, 84px) 0 clamp(32px, 4vw, 48px);
+  font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--bone-dim); font-weight: 600;
+}
+.team__divider::before,
+.team__divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line-soft);
+}
+.team__divider span {
+  font-family: var(--serif); font-style: italic;
+  color: var(--gold); font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  padding: 0 4px;
+}
+.team__cta {
+  margin: clamp(40px, 5vw, 56px) 0 0;
+  text-align: center;
+  font-family: var(--serif); font-style: italic;
+  color: var(--bone-dim);
+}
+.team__cta a {
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold-soft);
+  padding-bottom: 2px;
+  font-size: 17px;
+  letter-spacing: 0;
+}
+.team__cta a:hover { border-color: var(--gold); }
+
 /* ============ SFEER (horizontal scroll) ============ */
 .sfeer__scroller {
   display: flex; gap: 24px;

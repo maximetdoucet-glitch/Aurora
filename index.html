@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=12">
+  <link rel="stylesheet" href="css/style.css?v=13">
 </head>
 <body>
 
@@ -86,14 +86,130 @@
   <span class="hero__caption">Heidebloemstraat 79 · sinds 2016</span>
 
   <!-- Scroll hint -->
-  <a class="hero__scroll" href="#about" aria-label="Scroll naar inhoud"><span></span></a>
+  <a class="hero__scroll" href="#team" aria-label="Scroll naar inhoud"><span></span></a>
+</section>
+
+<!-- ============ ONS TEAM (top-of-funnel) ============ -->
+<section class="section team" id="team" aria-label="Ontmoet onze masseuses">
+  <div class="container">
+
+    <header class="section__head reveal">
+      <div class="eyebrow"><span class="num">02</span> Ons team</div>
+      <h2 class="display">Veertien gezichten, <em>één huis.</em></h2>
+      <p class="section__sub">
+        Aurora draait om wie je vanavond ontmoet. Klik op een masseuse om
+        haar profiel, foto's en beschikbaarheid te bekijken.
+      </p>
+    </header>
+
+    <!-- Vandaag / Morgen snapshot -->
+    <div class="roster__grid reveal">
+      <div class="roster__col">
+        <div class="roster__head">
+          <span class="roster__label">Vandaag</span>
+          <span class="roster__date"></span>
+        </div>
+        <div class="roster__list" data-roster="today"></div>
+      </div>
+      <div class="roster__col">
+        <div class="roster__head">
+          <span class="roster__label">Morgen</span>
+          <span class="roster__date"></span>
+        </div>
+        <div class="roster__list" data-roster="tomorrow"></div>
+      </div>
+    </div>
+
+    <!-- Volledig team -->
+    <div class="team__divider reveal">
+      <span>Het hele team</span>
+    </div>
+
+    <div class="masseuses__grid reveal" id="masseuses-grid">
+      <button class="masseuse-card" type="button" data-masseuse="isabel">
+        <div class="masseuse-card__photo" data-img="images/masseuses/isabel.jpg" aria-label="Isabel"></div>
+        <h3 class="masseuse-card__name">Isabel</h3>
+        <p class="masseuse-card__hint">Slank · donkerblond</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="paula">
+        <div class="masseuse-card__photo" data-img="images/masseuses/paula.jpg" aria-label="Paula"></div>
+        <h3 class="masseuse-card__name">Paula</h3>
+        <p class="masseuse-card__hint">Atletisch · exotisch</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="jessy">
+        <div class="masseuse-card__photo" data-img="images/masseuses/jessy.jpg" aria-label="Jessy"></div>
+        <h3 class="masseuse-card__name">Jessy</h3>
+        <p class="masseuse-card__hint">Latina · volle rondingen</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="rosalie">
+        <div class="masseuse-card__photo" data-img="images/masseuses/rosalie.jpg" aria-label="Rosalie"></div>
+        <h3 class="masseuse-card__name">Rosalie</h3>
+        <p class="masseuse-card__hint">Nederlandse blondine</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="lisa">
+        <div class="masseuse-card__photo" data-img="images/masseuses/lisa.jpg" aria-label="Lisa"></div>
+        <h3 class="masseuse-card__name">Lisa</h3>
+        <p class="masseuse-card__hint">Spaanse brunette</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="natasja">
+        <div class="masseuse-card__photo" data-img="images/masseuses/natasja.jpg" aria-label="Natasja"></div>
+        <h3 class="masseuse-card__name">Natasja</h3>
+        <p class="masseuse-card__hint">Donkerblond · ervaren</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="lara">
+        <div class="masseuse-card__photo" data-img="images/masseuses/lara.jpg" aria-label="Lara"></div>
+        <h3 class="masseuse-card__name">Lara</h3>
+        <p class="masseuse-card__hint">Zuid-Amerikaans · vrolijk</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="anna">
+        <div class="masseuse-card__photo" data-img="images/masseuses/anna.jpg" aria-label="Anna"></div>
+        <h3 class="masseuse-card__name">Anna</h3>
+        <p class="masseuse-card__hint">Nederlands · natuurlijk</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="dehlia">
+        <div class="masseuse-card__photo" data-img="images/masseuses/dehlia.jpg" aria-label="Dehlia"></div>
+        <h3 class="masseuse-card__name">Dehlia</h3>
+        <p class="masseuse-card__hint">Donkere krullen · blauwe ogen</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="jacky">
+        <div class="masseuse-card__photo" data-img="images/masseuses/jacky.jpg" aria-label="Jacky"></div>
+        <h3 class="masseuse-card__name">Jacky</h3>
+        <p class="masseuse-card__hint">Zuid-Europees · slank</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="jenna-rose">
+        <div class="masseuse-card__photo" data-img="images/masseuses/jenna-rose.jpg" aria-label="Jenna Rose"></div>
+        <h3 class="masseuse-card__name">Jenna Rose</h3>
+        <p class="masseuse-card__hint">Lang · slank · Nederlands</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="sera">
+        <div class="masseuse-card__photo" data-img="images/masseuses/sera.jpg" aria-label="Sera"></div>
+        <h3 class="masseuse-card__name">Sera</h3>
+        <p class="masseuse-card__hint">Lang · blond · Nederlands</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="wendy">
+        <div class="masseuse-card__photo" data-img="images/masseuses/wendy.jpg" aria-label="Wendy"></div>
+        <h3 class="masseuse-card__name">Wendy</h3>
+        <p class="masseuse-card__hint">Slanke blondine</p>
+      </button>
+      <button class="masseuse-card" type="button" data-masseuse="alex">
+        <div class="masseuse-card__photo" data-img="images/masseuses/alex.jpg" aria-label="Alex"></div>
+        <h3 class="masseuse-card__name">Alex</h3>
+        <p class="masseuse-card__hint">Mannelijke masseur · ervaren</p>
+      </button>
+    </div>
+
+    <p class="team__cta reveal">
+      <a href="masseuses.html">Lees meer over elke masseuse →</a>
+    </p>
+
+  </div>
 </section>
 
 <!-- ============ ABOUT ============ -->
 <section class="section about" id="about">
   <div class="container about__grid">
     <div class="about__copy reveal">
-      <div class="eyebrow"><span class="num">02</span> De salon</div>
+      <div class="eyebrow"><span class="num">03</span> De salon</div>
       <h2 class="display">Een huis voor de zintuigen, <em>waar tijd vertraagt.</em></h2>
       <p>
         Aurora is geen massagesalon zoals een ander. Achter een onopvallende
@@ -127,7 +243,7 @@
 <section class="section services" id="services">
   <div class="container">
     <header class="section__head reveal">
-      <div class="eyebrow"><span class="num">03</span> De massages</div>
+      <div class="eyebrow"><span class="num">04</span> De massages</div>
       <h2 class="display">Vier ervaringen, <em>onder één dak.</em></h2>
       <p class="section__sub">
         Tarieven verschillen per masseuse en duur — bel of vraag bij je reservering.
@@ -204,7 +320,7 @@
 <section class="section suites" id="suites">
   <div class="container">
     <header class="section__head reveal">
-      <div class="eyebrow"><span class="num">04</span> De suites</div>
+      <div class="eyebrow"><span class="num">05</span> De suites</div>
       <h2 class="display">Vier werelden, <em>onder één dak.</em></h2>
       <p class="section__sub">Kies de sfeer die bij de avond past.</p>
     </header>
@@ -265,42 +381,6 @@
       </article>
 
     </div>
-  </div>
-</section>
-
-<!-- ============ ROSTER (Vandaag / Morgen) ============ -->
-<section class="section roster" id="roster" aria-label="Wie is er aanwezig">
-  <div class="container">
-    <header class="section__head reveal">
-      <div class="eyebrow"><span class="num">05</span> Wie is er nu</div>
-      <h2 class="display">Aanwezig <em>vandaag &amp; morgen.</em></h2>
-      <p class="section__sub">
-        De bezetting wisselt per dag. Klik een masseuse om haar profiel te bekijken,
-        of bel ons voor de actuele lijst.
-      </p>
-    </header>
-
-    <div class="roster__grid reveal">
-      <div class="roster__col">
-        <div class="roster__head">
-          <span class="roster__label">Vandaag</span>
-          <span class="roster__date"></span>
-        </div>
-        <div class="roster__list" data-roster="today"></div>
-      </div>
-      <div class="roster__col">
-        <div class="roster__head">
-          <span class="roster__label">Morgen</span>
-          <span class="roster__date"></span>
-        </div>
-        <div class="roster__list" data-roster="tomorrow"></div>
-      </div>
-    </div>
-
-    <p class="roster__hint reveal">
-      Op zoek naar een specifieke masseuse?
-      <a href="masseuses.html">Bekijk het hele team →</a>
-    </p>
   </div>
 </section>
 
@@ -416,6 +496,47 @@
     <span>Site made by MG Visuals</span>
   </div>
 </footer>
+
+<!-- ============ MASSEUSE DETAIL MODAL ============ -->
+<div class="masseuse-modal" id="masseuse-modal" role="dialog" aria-modal="true" aria-labelledby="masseuse-modal-name" hidden>
+  <div class="masseuse-modal__backdrop" data-close-masseuse></div>
+  <div class="masseuse-modal__panel">
+    <button class="masseuse-modal__close" data-close-masseuse aria-label="Sluiten">×</button>
+    <div class="masseuse-modal__gallery">
+      <div class="masseuse-modal__photo" id="masseuse-modal-photo"></div>
+      <button class="masseuse-modal__arrow masseuse-modal__arrow--prev" id="masseuse-modal-prev" aria-label="Vorige foto" hidden>‹</button>
+      <button class="masseuse-modal__arrow masseuse-modal__arrow--next" id="masseuse-modal-next" aria-label="Volgende foto" hidden>›</button>
+      <span class="masseuse-modal__counter" id="masseuse-modal-counter" hidden></span>
+      <div class="masseuse-modal__thumbs" id="masseuse-modal-thumbs" hidden></div>
+    </div>
+    <div class="masseuse-modal__copy">
+      <div class="eyebrow"><span class="num">Aurora</span> · masseuse</div>
+      <h2 class="masseuse-modal__name" id="masseuse-modal-name"></h2>
+      <p class="masseuse-modal__tagline" id="masseuse-modal-tagline"></p>
+      <p class="masseuse-modal__bio" id="masseuse-modal-bio"></p>
+
+      <div class="masseuse-modal__section">
+        <h4>Specialiteiten</h4>
+        <ul class="masseuse-modal__list" id="masseuse-modal-specialties"></ul>
+      </div>
+
+      <div class="masseuse-modal__section">
+        <h4>Aanwezig</h4>
+        <p class="masseuse-modal__days" id="masseuse-modal-days"></p>
+        <p class="masseuse-modal__hint">
+          De agenda wisselt per week. Voor de actuele bezetting bel
+          <a href="tel:+31243502776">024 350 2776</a> of geef een
+          voorkeur op bij je reservering.
+        </p>
+      </div>
+
+      <div class="masseuse-modal__cta">
+        <button class="btn btn--accent btn--lg" id="masseuse-modal-book">Reserveer met deze masseuse</button>
+        <button class="btn btn--ghost" data-close-masseuse>Sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ============ BOOKING MODAL ============ -->
 <div class="book" id="book-modal" role="dialog" aria-modal="true" aria-labelledby="book-title" hidden>
