@@ -844,18 +844,40 @@ if (masseuseModal) {
 // Click toggles; preference persists in localStorage so returning
 // visitors hear it again (after their first interaction on the new visit
 // the saved-on state will resume).
+//
+// Auto-pause: once playing, scrolling past the hero fades the track
+// out. The Sfeer button stays — visitor can re-enable manually if they
+// want music for the rest of the page. Only fires once per page load.
 (function ambientAudio() {
   const btn   = $("#ambient-toggle");
   const audio = $("#ambient-audio");
   if (!btn || !audio) return;
 
-  audio.volume = 0.28; // calm background level
+  const BASE_VOLUME = 0.45; // calm background — bumped up slightly
+  audio.volume = BASE_VOLUME;
 
   const STORAGE_KEY = "aurora-ambient";
-  let unlocked = false; // becomes true after the first successful play()
+  let unlocked = false;            // true after the first successful play()
+  let autoPauseConsumed = false;   // scroll-fade only fires once per load
+
+  function fadeOut(duration = 700) {
+    const startVol = audio.volume;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min(1, (now - start) / duration);
+      audio.volume = startVol * (1 - t);
+      if (t < 1) requestAnimationFrame(tick);
+      else {
+        setPlaying(false);
+        audio.volume = BASE_VOLUME; // reset for next manual play
+      }
+    }
+    requestAnimationFrame(tick);
+  }
 
   function setPlaying(playing, persist = true) {
     if (playing) {
+      audio.volume = BASE_VOLUME;
       const p = audio.play();
       if (p && typeof p.then === "function") {
         p.then(() => {
@@ -879,12 +901,23 @@ if (masseuseModal) {
 
   on(btn, "click", () => setPlaying(!btn.classList.contains("is-playing")));
 
+  // Scroll past ~70% of the viewport (i.e. past the hero) → fade out.
+  function onScrollAutoPause() {
+    if (autoPauseConsumed) return;
+    if (!btn.classList.contains("is-playing")) return;
+    if (window.scrollY > window.innerHeight * 0.7) {
+      autoPauseConsumed = true;
+      window.removeEventListener("scroll", onScrollAutoPause);
+      fadeOut();
+    }
+  }
+  window.addEventListener("scroll", onScrollAutoPause, { passive: true });
+
   // If the visitor previously enabled it, try to resume. The first call
   // may be silently rejected by the browser; the next user gesture will
   // succeed because setPlaying() runs again on click.
   if (localStorage.getItem(STORAGE_KEY) === "on") {
     setPlaying(true, false);
-    // Fall-back: resume on first user gesture if blocked
     const resume = () => {
       if (!unlocked && localStorage.getItem(STORAGE_KEY) === "on") {
         setPlaying(true, false);
