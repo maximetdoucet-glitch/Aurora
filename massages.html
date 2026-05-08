@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=10">
+  <link rel="stylesheet" href="css/style.css?v=11">
 </head>
 <body>
 
@@ -416,12 +416,18 @@
 
         <div class="book__group">
           <div class="book__group-label">Suite <span class="book__group-meta">optioneel</span></div>
-          <div class="book__suites">
-            <button class="book__suite is-any" data-suite=""         data-label="Geen voorkeur">Geen voorkeur</button>
-            <button class="book__suite"        data-suite="egypt"    data-label="Egypt Suite">Egypt</button>
-            <button class="book__suite"        data-suite="japanese" data-label="Japanese Suite">Japanese</button>
-            <button class="book__suite"        data-suite="hamam"    data-label="Hamam Suite">Hamam</button>
-            <button class="book__suite"        data-suite="thai"     data-label="Thaise Suite">Thaise</button>
+          <div class="book__select" data-select="suite">
+            <button class="book__select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="book__select-value">Geen voorkeur</span>
+              <span class="book__select-arrow" aria-hidden="true"></span>
+            </button>
+            <ul class="book__select-list" role="listbox">
+              <li class="book__select-option is-selected" data-value=""         role="option">Geen voorkeur</li>
+              <li class="book__select-option"             data-value="egypt"    role="option">Egypt Suite</li>
+              <li class="book__select-option"             data-value="japanese" role="option">Japanese Suite</li>
+              <li class="book__select-option"             data-value="hamam"    role="option">Hamam Suite</li>
+              <li class="book__select-option"             data-value="thai"     role="option">Thaise Suite</li>
+            </ul>
           </div>
         </div>
 
@@ -465,6 +471,6 @@
   </div>
 </div>
 
-<script src="js/main.js?v=10"></script>
+<script src="js/main.js?v=11"></script>
 </body>
 </html>

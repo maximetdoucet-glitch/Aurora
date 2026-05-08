@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=10">
+  <link rel="stylesheet" href="css/style.css?v=11">
 </head>
 <body>
 
@@ -221,7 +221,7 @@
             zuilen. Onze grootste suite — <em>koningsbed, dubbele douche, ruimte
             voor twee.</em>
           </p>
-          <button class="btn btn--accent btn--sm" data-open-book>Boek de Egypt Suite →</button>
+          <button class="btn btn--accent btn--sm" data-open-book data-suite="egypt">Boek de Egypt Suite →</button>
         </div>
       </article>
 
@@ -234,7 +234,7 @@
             Shoji-schermen, papieren lantaarns en een vrijstaand ligbad. Sober,
             helder, in balans — <em>voor wie tijdens een massage wil verdwijnen.</em>
           </p>
-          <button class="btn btn--accent btn--sm" data-open-book>Boek de Japanese Suite →</button>
+          <button class="btn btn--accent btn--sm" data-open-book data-suite="japanese">Boek de Japanese Suite →</button>
         </div>
       </article>
 
@@ -247,7 +247,7 @@
             Diepblauw tegelwerk, een Turkse lantaarn en een verwarmde plak
             steen. <em>De thuisbasis voor het volledige Hamam-arrangement.</em>
           </p>
-          <button class="btn btn--accent btn--sm" data-open-book>Boek de Hamam Suite →</button>
+          <button class="btn btn--accent btn--sm" data-open-book data-suite="hamam">Boek de Hamam Suite →</button>
         </div>
       </article>
 
@@ -260,7 +260,7 @@
             Diepe rode wanden, gouden ornamenten en een eigen infrarood-sauna.
             <em>De favoriet voor een lange, warme Body 2 Body.</em>
           </p>
-          <button class="btn btn--accent btn--sm" data-open-book>Boek de Thaise Suite →</button>
+          <button class="btn btn--accent btn--sm" data-open-book data-suite="thai">Boek de Thaise Suite →</button>
         </div>
       </article>
 
@@ -448,12 +448,18 @@
 
         <div class="book__group">
           <div class="book__group-label">Suite <span class="book__group-meta">optioneel</span></div>
-          <div class="book__suites">
-            <button class="book__suite is-any" data-suite=""         data-label="Geen voorkeur">Geen voorkeur</button>
-            <button class="book__suite"        data-suite="egypt"    data-label="Egypt Suite">Egypt</button>
-            <button class="book__suite"        data-suite="japanese" data-label="Japanese Suite">Japanese</button>
-            <button class="book__suite"        data-suite="hamam"    data-label="Hamam Suite">Hamam</button>
-            <button class="book__suite"        data-suite="thai"     data-label="Thaise Suite">Thaise</button>
+          <div class="book__select" data-select="suite">
+            <button class="book__select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="book__select-value">Geen voorkeur</span>
+              <span class="book__select-arrow" aria-hidden="true"></span>
+            </button>
+            <ul class="book__select-list" role="listbox">
+              <li class="book__select-option is-selected" data-value=""         role="option">Geen voorkeur</li>
+              <li class="book__select-option"             data-value="egypt"    role="option">Egypt Suite</li>
+              <li class="book__select-option"             data-value="japanese" role="option">Japanese Suite</li>
+              <li class="book__select-option"             data-value="hamam"    role="option">Hamam Suite</li>
+              <li class="book__select-option"             data-value="thai"     role="option">Thaise Suite</li>
+            </ul>
           </div>
         </div>
 
@@ -541,6 +547,6 @@
 </button>
 <audio id="ambient-audio" loop preload="none" src="audio/ambient.mp3"></audio>
 
-<script src="js/main.js?v=10"></script>
+<script src="js/main.js?v=11"></script>
 </body>
 </html>

@@ -236,14 +236,19 @@ function closeModal() {
   state.date = null;
   state.time = null;
   $$(".book__service.is-selected", modal).forEach((b) => b.classList.remove("is-selected"));
-  $$(".book__suite.is-selected", modal).forEach((b) => b.classList.remove("is-selected"));
   $$(".book__masseuse.is-selected", modal).forEach((b) => b.classList.remove("is-selected"));
   $$(".book__slot.is-selected", modal).forEach((b) => b.classList.remove("is-selected"));
+  $$(".book__select[data-select='suite']", modal).forEach((sel) => setBookSelectValue(sel, ""));
+  closeAllBookSelects();
   $("#book-form").reset();
 }
 
 $$("[data-open-book]").forEach((b) =>
-  on(b, "click", () => openModal(b.getAttribute("data-service"))),
+  on(b, "click", () => openModal({
+    service:  b.getAttribute("data-service")  || undefined,
+    suite:    b.getAttribute("data-suite")    || undefined,
+    masseuse: b.getAttribute("data-masseuse") || undefined,
+  })),
 );
 $$("[data-close-book]").forEach((b) => on(b, "click", closeModal));
 on(document, "keydown", (e) => {
@@ -259,14 +264,55 @@ $$(".book__service").forEach((btn) =>
   }),
 );
 
-// Step 1: suites (optional)
-$$(".book__suite").forEach((btn) =>
-  on(btn, "click", () => {
-    $$(".book__suite").forEach((b) => b.classList.remove("is-selected"));
-    btn.classList.add("is-selected");
-    state.suite = btn.getAttribute("data-suite") || "";
-  }),
-);
+// Step 1: suites — custom dropdown (matches modal aesthetic; native
+// <select> would inherit OS styling that breaks the dark theme).
+function setBookSelectValue(sel, value) {
+  const opts = $$(".book__select-option", sel);
+  let label = "";
+  opts.forEach((o) => {
+    const match = (o.getAttribute("data-value") || "") === (value || "");
+    o.classList.toggle("is-selected", match);
+    if (match) label = o.textContent.trim();
+  });
+  const valueEl = $(".book__select-value", sel);
+  if (valueEl && label) valueEl.textContent = label;
+}
+function closeAllBookSelects() {
+  $$(".book__select.is-open").forEach((s) => {
+    s.classList.remove("is-open");
+    const t = $(".book__select-trigger", s);
+    if (t) t.setAttribute("aria-expanded", "false");
+  });
+}
+$$(".book__select").forEach((sel) => {
+  const trigger = $(".book__select-trigger", sel);
+  const which   = sel.getAttribute("data-select"); // "suite"
+
+  on(trigger, "click", (e) => {
+    e.stopPropagation();
+    const wasOpen = sel.classList.contains("is-open");
+    closeAllBookSelects();
+    if (!wasOpen) {
+      sel.classList.add("is-open");
+      trigger.setAttribute("aria-expanded", "true");
+    }
+  });
+
+  $$(".book__select-option", sel).forEach((opt) => {
+    on(opt, "click", () => {
+      const value = opt.getAttribute("data-value") || "";
+      setBookSelectValue(sel, value);
+      if (which === "suite") state.suite = value;
+      closeAllBookSelects();
+    });
+  });
+});
+on(document, "click", (e) => {
+  if (!e.target.closest(".book__select")) closeAllBookSelects();
+});
+on(document, "keydown", (e) => {
+  if (e.key === "Escape") closeAllBookSelects();
+});
 
 // Step 2: calendar
 function renderCalendar(monthOffset = 0) {
@@ -373,9 +419,7 @@ function renderStep() {
       b.classList.toggle("is-selected", b.getAttribute("data-service") === state.service);
     });
   }
-  $$(".book__suite").forEach((b) => {
-    b.classList.toggle("is-selected", (b.getAttribute("data-suite") || "") === state.suite);
-  });
+  $$(".book__select[data-select='suite']").forEach((sel) => setBookSelectValue(sel, state.suite));
   $$(".book__masseuse").forEach((b) => {
     b.classList.toggle("is-selected", (b.getAttribute("data-masseuse") || "") === state.masseuse);
   });
