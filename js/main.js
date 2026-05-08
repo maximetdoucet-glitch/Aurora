@@ -753,6 +753,65 @@ if (masseuseModal) {
   });
 }
 
+// ---------- AMBIENT AUDIO (homepage spa loop) ------------------------
+// Soft background audio. Off by default — browsers block autoplay-with-
+// sound until a user gesture, and we don't want to surprise visitors.
+// Click toggles; preference persists in localStorage so returning
+// visitors hear it again (after their first interaction on the new visit
+// the saved-on state will resume).
+(function ambientAudio() {
+  const btn   = $("#ambient-toggle");
+  const audio = $("#ambient-audio");
+  if (!btn || !audio) return;
+
+  audio.volume = 0.28; // calm background level
+
+  const STORAGE_KEY = "aurora-ambient";
+  let unlocked = false; // becomes true after the first successful play()
+
+  function setPlaying(playing, persist = true) {
+    if (playing) {
+      const p = audio.play();
+      if (p && typeof p.then === "function") {
+        p.then(() => {
+          unlocked = true;
+          btn.classList.add("is-playing");
+          btn.setAttribute("aria-pressed", "true");
+          if (persist) localStorage.setItem(STORAGE_KEY, "on");
+        }).catch(() => {
+          // autoplay blocked or audio file missing — stay silent
+          btn.classList.remove("is-playing");
+          btn.setAttribute("aria-pressed", "false");
+        });
+      }
+    } else {
+      audio.pause();
+      btn.classList.remove("is-playing");
+      btn.setAttribute("aria-pressed", "false");
+      if (persist) localStorage.removeItem(STORAGE_KEY);
+    }
+  }
+
+  on(btn, "click", () => setPlaying(!btn.classList.contains("is-playing")));
+
+  // If the visitor previously enabled it, try to resume. The first call
+  // may be silently rejected by the browser; the next user gesture will
+  // succeed because setPlaying() runs again on click.
+  if (localStorage.getItem(STORAGE_KEY) === "on") {
+    setPlaying(true, false);
+    // Fall-back: resume on first user gesture if blocked
+    const resume = () => {
+      if (!unlocked && localStorage.getItem(STORAGE_KEY) === "on") {
+        setPlaying(true, false);
+      }
+      document.removeEventListener("click", resume);
+      document.removeEventListener("scroll", resume);
+    };
+    document.addEventListener("click", resume, { once: true });
+    document.addEventListener("scroll", resume, { once: true, passive: true });
+  }
+})();
+
 // ---------- HOMEPAGE: VANDAAG / MORGEN ROSTER ------------------------
 // Renders into [data-roster] elements based on each masseuse's weekdays.
 // We don't claim a hard "today" — bezetting wisselt — but a daily filter
