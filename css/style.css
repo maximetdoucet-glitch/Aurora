@@ -1981,3 +1981,43 @@ button.masseuse-card,
   .book__form textarea,
   .book__select-trigger { font-size: max(16px, 1rem); }
 }
+
+/* =========================================================
+   Mobile optimization v3 — iOS stability + touch targets
+   (Adds on top of existing responsive rules without
+    overriding desktop)
+   ========================================================= */
+
+/* Themed tap highlight instead of default blue flash */
+a, button, [role="button"] {
+  -webkit-tap-highlight-color: rgba(0,0,0,0.08);
+}
+
+/* iOS — defeat input auto-zoom on focus */
+@supports (-webkit-touch-callout: none) {
+  input, textarea, select { font-size: max(16px, 1rem) !important; }
+}
+
+/* iOS Safari: stable hero height when address bar shows/hides */
+@supports (height: 100svh) {
+  .hero { min-height: 100svh; }
+}
+
+@media (max-width: 760px) {
+  /* Touch target floors — Fitts's Law 44×44 */
+  .nav__burger, .nav__mobile-close, .book__close { min-width: 44px; min-height: 44px; }
+  .gallery__btn { min-width: 44px; min-height: 44px; }
+  .menu-list__tab { min-height: 44px; }
+
+  /* Footer links: easier to tap */
+  footer a, .footer a { display: inline-block; padding: .35rem 0; }
+
+  /* Booking modal full-screen on phones (if not already) */
+  .book__panel { max-width: 100vw; max-height: 100svh; border-radius: 0; }
+}
+
+@media (max-width: 420px) {
+  /* Very small phones — extra tightening */
+  .book__dates, .book__day { font-size: 14px; }
+  .book__times { gap: .4rem; }
+}
